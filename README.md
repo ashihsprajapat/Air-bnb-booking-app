@@ -46,3 +46,113 @@ Welcome to the Airbnb Booking App! This project is a full-stack web application 
 ---
 
 ## Project Structure
+├── .gitignore
+├── BackEnd
+    ├── .gitignore
+    ├── Schemas
+    │   ├── bookingSchema.js
+    │   ├── listingSchema.js
+    │   ├── reviewsSchema.js
+    │   └── userSchema.js
+    ├── app.js
+    ├── config
+    │   ├── cloundinary.js
+    │   ├── mongooseDB.js
+    │   └── multer.js
+    ├── controller
+    │   ├── Review.controller.js
+    │   ├── booking.controller.js
+    │   ├── listing.controller.js
+    │   └── user.controll.js
+    ├── middleWare.js
+    ├── middleware
+    │   └── protectListing.js
+    ├── models
+    │   ├── bookingModel.js
+    │   ├── listingModel.js
+    │   ├── reviewModel.js
+    │   └── userModel.js
+    ├── package-lock.json
+    ├── package.json
+    ├── routes
+    │   ├── User.routes.js
+    │   ├── booking.rout.js
+    │   ├── listing.route.js
+    │   ├── review.rout.js
+    │   └── upload.js
+    ├── utils
+    │   └── tokenGenret.js
+    └── vercel.json
+├── FrontEnd
+    ├── .gitignore
+    ├── README.md
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── postcss.config.js
+    ├── public
+    │   └── vite.svg
+    ├── src
+    │   ├── App.css
+    │   ├── App.jsx
+    │   ├── Navbar.jsx
+    │   ├── assets
+    │   │   ├── ABNB-4aaade0f.png
+    │   │   ├── assets.js
+    │   │   ├── email_icon.svg
+    │   │   ├── lock_icon.svg
+    │   │   ├── logo.jpeg
+    │   │   ├── logo2.png
+    │   │   ├── logo_2.png
+    │   │   ├── person_icon.svg
+    │   │   ├── profile_upload_icon.svg
+    │   │   ├── react.svg
+    │   │   └── upload_area.svg
+    │   ├── components
+    │   │   ├── Cancell.jsx
+    │   │   ├── Footer.jsx
+    │   │   ├── LisitngCard.jsx
+    │   │   ├── ListingCardProfile.jsx
+    │   │   ├── MenubarShow.jsx
+    │   │   ├── Navbar.jsx
+    │   │   ├── Success.jsx
+    │   │   └── skeletons
+    │   │   │   ├── AllListingSckeleton.jsx
+    │   │   │   └── HomePageSkeleton.jsx
+    │   ├── context
+    │   │   └── AppContext.jsx
+    │   ├── index.css
+    │   ├── main.jsx
+    │   ├── pages
+    │   │   ├── AllBookingListingProfile.jsx
+    │   │   ├── AllListing.jsx
+    │   │   ├── AllListing.profile.jsx
+    │   │   ├── Authentication.jsx
+    │   │   ├── CreateListing.jsx
+    │   │   ├── EditListing.jsx
+    │   │   ├── HostPage.jsx
+    │   │   ├── SingleListing.jsx
+    │   │   ├── home.jsx
+    │   │   ├── oneListingProfile.jsx
+    │   │   └── profilesShow.jsx
+    │   └── views
+    │   │   └── body.jsx
+    ├── tailwind.config.js
+    ├── vercel.json
+    └── vite.config.js
+└── README.md
+
+
+/.gitignore:
+--------------------------------------------------------------------------------
+1 | 
+2 | .env
+3 | node_modules
+
+
+--------------------------------------------------------------------------------
+/BackEnd/.gitignore:
+--------------------------------------------------------------------------------
+1 | .env
+2 | node_modules
