@@ -46,6 +46,7 @@ app.listen(port, () => {
 
 import connectToDataBase from "./config/mongooseDB.js";
 import bookingRout from "./routes/booking.rout.js";
+import transactionRoute from "./routes/transacation.rout.js";
 
 //connect to database 
 await connectToDataBase()
@@ -74,4 +75,6 @@ app.use("/auth", userRoute)
 
 
 app.use("/booking", bookingRout)
+
+app.use("/transaction", transactionRoute)
 

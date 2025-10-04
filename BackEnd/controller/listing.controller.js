@@ -17,10 +17,10 @@ export const getListingById = async (req, res) => {
     const { id } = req.params;
     try {
 
-        const listing = await Listing.findById(id).populate({
-            path:"reviews",
-            select:"ownerName comment rating createdAt onwer"
-        })
+        const listing = await Listing.findById(id).populate([{
+            path: "reviews",
+            select: "ownerName comment rating createdAt onwer"
+        }, { path: "currentBooking", populate: { path: "guest", select: "-password" } }])
         if (!listing) {
             return res.json({ success: false, message: "Invalid " })
         }
@@ -137,7 +137,7 @@ export const createListing = async (req, res) => {
                 url: imageUpload.secure_url,
             })
         }
-       
+
         const newListing = new Listing({
             title, description, price, location, country, image,
             onwer: userId._id, address, guestType, category
@@ -154,15 +154,15 @@ export const createListing = async (req, res) => {
 }
 
 
-export const getAllListingHostByUser = async(req, res) =>{
+export const getAllListingHostByUser = async (req, res) => {
 
-    try{
-        const user= req.user;
-        const _id= user._id;
-        const Listings= await Listing.find({onwer:_id});
+    try {
+        const user = req.user;
+        const _id = user._id;
+        const Listings = await Listing.find({ onwer: _id });
 
-        res.json({success:true, Listings});
-    }catch(err){
+        res.json({ success: true, Listings });
+    } catch (err) {
         console.log(err)
     }
 

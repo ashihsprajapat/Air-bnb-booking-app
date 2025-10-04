@@ -177,6 +177,7 @@ function SingleListing() {
 
 
 
+
     //maintain when from and to change then calculate totalPrice and nights also
     useEffect(() => {
 
@@ -197,61 +198,67 @@ function SingleListing() {
 
 
 
+    const initPay = async (order) => {
+        console.log("calling to verify function1")
+        const options = {
+            key: import.meta.env.VITE_ROZORPAY_ID,
+            amount: order.amount,
+            currency: order.currency,
+            name: "Credits paymnets",
+            description: "Credits paymnets",
+            order_id: order.id,
+            receipt: order.receipt,
+            handler: async (response) => {
+                console.log(response);
+                const token = userToken;
+                try {
+                    console.log("calling to verify function")
+                    const { data } = await axios.post(`${backendUrl}/transaction/verify`, response, { headers: { token: userToken } })
+                    console.log("getting data after verifying ", data)
+                    if (data.success) {
+                        toast.success(data.message)
 
-
-
-//payment method stripe
-const makePayment = async (e) => {
-    e.preventDefault();
-    try {
-        setIsLoading(true);
-
-        // Calculate total price
-        const totalPrice = price * night; // Using the existing night and price state variables
-
-        // Load Stripe
-        const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
-
-        // First create booking and get session
-        const { data } = await axios.post(
-            `${backendUrl}/booking/createBooking/${id}`,
-            {
-                from,
-                to,
-                guestCount,
-                totalPrice,
-                paymentStatus
-            },
-            {
-                headers: { token: userToken }
+                    }
+                } catch (error) {
+                    console.log(error.message)
+                }
             }
-        );
-
-        if (data.success && data.session) {
-            // Redirect to Stripe checkout
-            const result = await stripe.redirectToCheckout({
-                sessionId: data.session.id
-            });
-
-            if (result.error) {
-                toast.error(result.error.message);
-            }
-        } else {
-            toast.error(data.message || 'Failed to create booking');
         }
-    } catch (err) {
-        console.error('Payment error:', err);
-        // Check if error is related to HTTPS requirement
-        if (err.message && err.message.includes('HTTPS')) {
-            toast.error('Stripe requires a secure HTTPS connection. Please ensure you are using HTTPS in production.');
-        } else {
-            toast.error(err.message || 'Payment failed. Please ensure you are using HTTPS in production.');
-        }
-    } finally {
-        setIsLoading(false);
+
+        const rzp = new window.Razorpay(options);
+        rzp.open()
     }
-};
 
+    const paymentRazorpay = async () => {
+        try {
+            const bookingData = {
+                guests: guestCount,
+                totalAmount: total,
+                nights: night,
+                bookingDuration: {
+                    from,
+                    to
+                },
+                pricePerNight: listing.price
+
+            }
+
+
+            const { data } = await axios.post(`${backendUrl}/transaction/payment/${id}`, bookingData, { headers: { token: userToken } })
+            console.log("data after calling to razorpay -razor", data);
+
+            if (data.success) {
+                initPay(data.order);
+
+            } else {
+                console.log(data.message)
+            }
+
+        } catch (error) {
+            console.log(error)
+            toast.error(error.message)
+        }
+    }
 
 
     if (isLoading) {
@@ -442,139 +449,100 @@ const makePayment = async (e) => {
                                 <span className="ml-1 font-medium">4.9</span>
                             </div>
                         </div>
-                        {
-                            !listing.isBook ? (
-                                <form onSubmit={(e) => {
-                                    e.preventDefault();
-                                    // Open payment gateway
-                                    // const options = {
-                                    //     key: "YOUR_RAZORPAY_KEY", // Replace with actual key
-                                    //     amount: total * 100, // Amount in paise
-                                    //     currency: "INR",
-                                    //     name: "Airbnb Booking",
-                                    //     description: `Booking for ${listing.title}`,
-                                    //     handler: function(response) {
-                                    //         // On successful payment
-                                    //         setPaymentStatus("confirmed");
-                                    //         bookingListing(e);
-                                    //     },
-                                    //     prefill: {
-                                    //         name: userData?.name,
-                                    //         email: userData?.email
-                                    //     },
-                                    //     notes: {
-                                    //         address: listing.location
-                                    //     },
-                                    //     theme: {
-                                    //         color: "#f43f5e"
-                                    //     }
-                                    // };
 
-                                    // Check if Razorpay is loaded
-                                    // if (typeof window.Razorpay === 'undefined') {
-                                    //     toast.error('Payment gateway is not loaded. Please try again later.');
-                                    //     return;
-                                    // }
 
-                                    // // Create Razorpay instance and open payment modal
-                                    // try {
-                                    //     const rzp = new window.Razorpay(options);
-                                    //     rzp.open();
-                                    // } catch (error) {
-                                    //     console.error('Razorpay initialization error:', error);
-                                    //     toast.error('Unable to initialize payment. Please try again.');
-                                    // }
-                                }}>
-                                    <div>
-                                        <div className="grid grid-cols-2 gap-2 mb-4">
-                                            <div className="border border-gray-300 rounded-tl-lg rounded-bl-lg p-3">
-                                                <label className="block text-xs font-medium text-gray-700 mb-1">From</label>
-                                                <input value={from} onChange={(e) => setFrom(e.target.value)} type="date" className="w-full text-sm focus:outline-none" />
-                                            </div>
-                                            <div className="border border-gray-300 rounded-tr-lg rounded-br-lg p-3">
-                                                <label className="block text-xs font-medium text-gray-700 mb-1">to</label>
-                                                <input value={to} onChange={(e) => setTo(e.target.value)} type="date" className="w-full text-sm focus:outline-none" />
-                                            </div>
-                                        </div>
+                        <form onSubmit={(e) => {
+                            e.preventDefault();
+                            address: listing.location
 
-                                        <div className="border border-gray-300 rounded-lg p-3 mb-4">
-                                            <label className="block text-xs font-medium text-gray-700 mb-1">GUESTS</label>
-                                            <select className="w-full text-sm focus:outline-none bg-transparent" value={guestCount} onChange={(e) => setGuestCount(parseInt(e.target.value))} >
-                                                {
-                                                    [1, 2, 3, 4, 5].map((guest, i) => (
-                                                        <option key={i} >{guest} {guest === 1 ? "guest" : "guests"} </option>
-                                                    ))
-                                                }
-                                            </select>
-                                        </div>
 
-                                        <button
-                                            className="w-full bg-gradient-to-r from-rose-500 to-rose-600 text-white py-3 rounded-lg font-medium hover:from-rose-600 hover:to-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                                            type='button' // Changed from 'submit' to 'button' to prevent form submission
-                                            disabled={isLoading || !userToken}
-                                            onClick={(e) => {
-                                                if (!userToken) {
-                                                    toast.error('Please login to continue');
-                                                    return;
-                                                }
-                                                makePayment(e)
-
-                                                // const options = {
-                                                //     key: "YOUR_RAZORPAY_KEY", // Replace with actual Razorpay key
-                                                //     amount: total * 100,
-                                                //     currency: "INR",
-                                                //     name: "Airbnb Booking",
-                                                //     description: `Booking for ${listing.title}`,
-                                                //     handler: function(response) {
-                                                //         setPaymentStatus("confirmed");
-                                                //         bookingListing(e);
-                                                //     },
-                                                //     prefill: {
-                                                //         name: userData?.name,
-                                                //         email: userData?.email
-                                                //     },
-                                                //     theme: {
-                                                //         color: "#f43f5e"
-                                                //     }
-                                                // };
-
-                                                // const rzp = new window.Razorpay(options);
-                                                // rzp.open();
-                                            }}
-                                        >
-                                            {isLoading ? 'Processing...' : userToken ? 'Proceed to Payment' : 'Please Login to Book'}
-                                        </button>
-                                        <p className="text-center text-sm text-gray-500 mt-4">Secure payment powered by Razorpay</p>
-
-                                        <div className="border-t border-gray-100 mt-6 pt-4">
-                                            <div className="flex justify-between mb-2">
-                                                <span>₹{listing.price} × {night} nights</span>
-                                                <span>₹{total}</span>
-                                            </div>
-                                            <div className="flex justify-between mb-2">
-                                                <span>Cleaning fee</span>
-                                                <span>₹1,200</span>
-                                            </div>
-                                            <div className="flex justify-between mb-2">
-                                                <span>Service fee</span>
-                                                <span>₹{Math.round(listing.price * 5 * 0.12)}</span>
-                                            </div>
-                                            <div className="border-t border-gray-100 mt-4 pt-4 flex justify-between font-bold">
-                                                <span>Total</span>
-                                                <span>₹{total}</span>
-                                            </div>
-                                        </div>
+                        }}>
+                            <div>
+                                <div className="grid grid-cols-2 gap-2 mb-4">
+                                    <div className="border border-gray-300 rounded-tl-lg rounded-bl-lg p-3">
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">From</label>
+                                        <input value={from} onChange={(e) => setFrom(e.target.value)} type="date" className="w-full text-sm focus:outline-none" />
                                     </div>
-                                </form>
-                            )
-                                :
-                                (
+                                    <div className="border border-gray-300 rounded-tr-lg rounded-br-lg p-3">
+                                        <label className="block text-xs font-medium text-gray-700 mb-1">to</label>
+                                        <input value={to} onChange={(e) => setTo(e.target.value)} type="date" className="w-full text-sm focus:outline-none" />
+                                    </div>
+                                </div>
+
+                                <div className="border border-gray-300 rounded-lg p-3 mb-4">
+                                    <label className="block text-xs font-medium text-gray-700 mb-1">GUESTS</label>
+                                    <select className="w-full text-sm focus:outline-none bg-transparent" value={guestCount} onChange={(e) => setGuestCount(parseInt(e.target.value))} >
+                                        {
+                                            [1, 2, 3, 4, 5].map((guest, i) => (
+                                                <option key={i} >{guest} {guest === 1 ? "guest" : "guests"} </option>
+                                            ))
+                                        }
+                                    </select>
+                                </div>
+                                {listing.currentBooking.find(
+                                    booking =>
+                                        new Date(booking.bookingDuration.from) <= new Date(to) &&
+                                        new Date(booking.bookingDuration.to) >= new Date(from)
+                                ) ? listing.isBook === userData?._id ? (
+                                    // 🟩 If current user already booked it
+                                    <div className="text-center p-4 bg-green-50 rounded-lg">
+                                        <h2 className="text-xl font-semibold text-green-700">
+                                            You have already booked this place
+                                        </h2>
+                                    </div>
+                                ) : (
+
+                                    // 🟥 If overlap found → show "already booked"
                                     <div className="text-center p-4 bg-gray-50 rounded-lg">
-                                        <h2 className="text-xl font-semibold text-gray-900">This property is already booked</h2>
-                                        <p className="text-gray-600 mt-2">Please try different dates or check our other listings</p>
+                                        <h2 className="text-xl font-semibold text-gray-900">
+                                            This property is already booked for the selected dates
+                                        </h2>
+                                        <p className="text-gray-600 mt-2">
+                                            Please try different dates or check our other listings.
+                                        </p>
                                     </div>
-                                )
-                        }
+                                ) : (
+                                    // 🟦 Otherwise, show Payment button
+                                    <button
+                                        className="w-full bg-gradient-to-r from-rose-500 to-rose-600 text-white py-3 rounded-lg font-medium hover:from-rose-600 hover:to-rose-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        type="button"
+                                        disabled={isLoading || !userToken}
+                                        onClick={() => {
+                                            if (!userToken) {
+                                                toast.error('Please login to continue');
+                                                return;
+                                            }
+                                            paymentRazorpay();
+                                        }}
+                                    >
+                                        {isLoading ? 'Processing...' : userToken ? 'Proceed to Payment' : 'Please Login to Book'}
+                                    </button>
+                                )}
+
+                                <p className="text-center text-sm text-gray-500 mt-4">Secure payment powered by Razorpay</p>
+
+                                <div className="border-t border-gray-100 mt-6 pt-4">
+                                    <div className="flex justify-between mb-2">
+                                        <span>₹{listing.price} × {night} nights</span>
+                                        <span>₹{total}</span>
+                                    </div>
+                                    <div className="flex justify-between mb-2">
+                                        <span>Cleaning fee</span>
+                                        <span>₹1,200</span>
+                                    </div>
+                                    <div className="flex justify-between mb-2">
+                                        <span>Service fee</span>
+                                        <span>₹{Math.round(listing.price * 5 * 0.12)}</span>
+                                    </div>
+                                    <div className="border-t border-gray-100 mt-4 pt-4 flex justify-between font-bold">
+                                        <span>Total</span>
+                                        <span>₹{total}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+
 
 
 

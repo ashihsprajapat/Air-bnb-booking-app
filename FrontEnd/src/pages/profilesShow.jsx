@@ -44,7 +44,7 @@ function ProfileShow() {
                     {userData && (
                         <div className="flex items-center gap-3">
                             <div className="hidden md:block">
-                                <p className="text-sm font-medium">Welcome back,</p>
+
                                 <p className="text-gray-700 font-semibold">{userData.name || 'User'}</p>
                             </div>
                             <div className="h-10 w-10 rounded-full bg-rose-100 flex items-center justify-center text-rose-500">
@@ -72,34 +72,50 @@ function ProfileShow() {
 
             <div className='flex flex-col md:flex-row min-h-[calc(100vh-73px)]'>
                 {/* Sidebar */}
-                <div className="md:w-64 w-full border-r border-gray-200 bg-white md:min-h-[calc(100vh-73px)]">
-                    <div className="p-4 border-b border-gray-200">
-                        <h2 className="font-semibold text-gray-800">User Dashboard</h2>
-                        <p className="text-sm text-gray-500">Manage your listings and bookings</p>
+                <aside className="w-full md:w-64 lg:w-72 border-r border-gray-200 bg-white md:min-h-[calc(100vh-73px)] flex flex-col">
+                    {/* Header */}
+                    <div className="p-5 border-b border-gray-200 bg-gray-50">
+                        <h2 className="text-lg font-semibold text-gray-800">User Dashboard</h2>
+                        <p className="text-sm text-gray-500 mt-1">Manage your listings and bookings</p>
                     </div>
-                    <nav className="p-2">
+
+                    {/* Stats */}
+                    <div className="p-4 grid grid-cols-2 gap-3 border-b border-gray-200">
+                        <div className="bg-rose-50 rounded-lg p-3 text-center">
+                            <p className="text-2xl font-bold text-rose-600">{userData?.totalPublicListings || 0}</p>
+                            <p className="text-xs text-gray-600 mt-1">Public Listings</p>
+                        </div>
+                        <div className="bg-blue-50 rounded-lg p-3 text-center">
+                            <p className="text-2xl font-bold text-blue-600">{userData?.totalBookings || 0}</p>
+                            <p className="text-xs text-gray-600 mt-1">Total Bookings</p>
+                        </div>
+                    </div>
+
+                    {/* Navigation */}
+                    <nav className="flex-1 p-3 space-y-1">
                         {sidebarLinks.map((item, index) => (
-                            <Link
+                            <NavLink
                                 to={item.path}
                                 key={index}
                                 onClick={() => setCurrDashboard(index)}
-                                className={`flex items-center py-3 px-4 gap-3 rounded-lg mb-1 transition-all duration-200
-                                ${index === currDashboard
-                                        ? "bg-rose-50 text-rose-600 font-medium"
-                                        : "hover:bg-gray-100 text-gray-700"
-                                    }`}
+                                className={({ isActive }) =>
+                                    `flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 ` +
+                                    (isActive
+                                        ? "bg-rose-50 text-rose-600 font-semibold shadow-sm"
+                                        : "text-gray-700 hover:bg-gray-100")
+                                }
                             >
                                 {item.icon}
                                 <span>{item.name}</span>
-                            </Link>
+                            </NavLink>
                         ))}
                     </nav>
-                </div>
+                </aside>
 
                 {/* Main Content */}
-                <div className='flex-1 p-4 md:p-6 overflow-auto'>
+                <main className="flex-1 p-4 md:p-6 lg:p-8 bg-gray-50 overflow-auto">
                     <Outlet />
-                </div>
+                </main>
             </div>
         </div>
     )

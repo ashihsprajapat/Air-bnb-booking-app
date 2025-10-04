@@ -7,18 +7,11 @@ const stripe = new Stripe(process.env.STRIPE_KEY);
 
 export const createBooking = async (req, res) => {
     try {
+        const bookingData = req.bookingData;
         const user = req.user;
-        const { listingId } = req.params;
+        const listingId = req.bookingData?.listingId.toString();
 
-        const {
-            guestCount,
-            totalPrice,
-            paymentStatus,
-            from,
-            to
-        } = req.body;
 
-        // Find listing first to use in stripe session
         const listing = await Listing.findById(listingId);
         if (!listing) {
             return res.status(404).json({
@@ -27,13 +20,6 @@ export const createBooking = async (req, res) => {
             });
         }
 
-        // Validate required fields
-        if (!totalPrice || !from || !to || !guestCount || !paymentStatus) {
-            return res.status(400).json({
-                success: false,
-                message: "Missing required booking details"
-            });
-        }
 
         if (listing.isBooked) {
             return res.status(400).json({
@@ -42,52 +28,33 @@ export const createBooking = async (req, res) => {
             });
         }
 
-        // Create Stripe checkout session
-        const session = await stripe.checkout.sessions.create({
-            payment_method_types: ['card'],
-            line_items: [
-                {
-                    price_data: {
-                        currency: 'usd',
-                        product_data: {
-                            name: listing.title,
-                        },
-                        unit_amount: totalPrice * 100,
-                    },
-                    quantity: 1,
-                },
-            ],
-            mode: 'payment',
-            success_url: 'http://localhost:5173/success',
-            cancel_url: 'http://localhost:5173/cancel',
-        });
 
         // Create new booking
         const newBooking = new Booking({
             guest: user._id,
             ownerName: user.name,
-            totalPrice,
-            paymentStatus,
-            listingId: listing._id,
-            userId: user._id,
+            totalPrice: bookingData.totalAmount,
+            paymentStatus: bookingData.payment === true ? 'confirmed' : 'cancelled',
+            listing: listing._id,
+            transaction: bookingData._id,
             bookingDuration: {
-                from,
-                to,
-                guestCount
+                from: bookingData.bookingDuration.from,
+                to: bookingData.bookingDuration.to,
+                guestCount: bookingData.guests
             }
         });
 
         await newBooking.save();
 
         // Update listing status
-        listing.isBooked = user._id;
-        listing.currentBooking = newBooking._id;
+        listing.isBook = user._id;
+        listing.currentBooking.push( newBooking._id);
         await listing.save();
 
         return res.status(200).json({
             success: true,
-            id: session.id,
-            booking: newBooking
+            booking: newBooking,
+            message: "Booking conformed"
         });
 
     } catch (err) {
@@ -136,5 +103,18 @@ export const cancelBooking = async (req, res) => {
     } catch (err) {
         res.json({ success: false, message: err.message })
 
+    }
+}
+
+export const getAllBookingByUser= async(req, res)=>{
+    try {
+        const {user}= req
+        const bookings= await Booking.find({guest: user._id}).populate("listing")
+
+        res.json({success:true, message:"All bookings", bookings})
+
+    } catch (error) {
+        console.log(error.message)
+        res.json({success:false, message:error.message})
     }
 }

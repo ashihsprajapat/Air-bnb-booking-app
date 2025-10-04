@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { MapPin, IndianRupee, Calendar, User, Home, Star, Edit, Trash2, Clock, MessageSquare } from 'lucide-react'
 
-import  toast  from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
 function OneListingProfile() {
     const { userData, backendUrl, userToken, navigate } = useContext(AppContext);
@@ -20,7 +20,7 @@ function OneListingProfile() {
     useEffect(() => {
         if (list_id && userToken) {
             fetchListingDetails();
-            fetchListingBookings();
+            //fetchListingBookings();
         }
     }, [list_id, userToken]);
 
@@ -36,6 +36,7 @@ function OneListingProfile() {
 
             if (data.success) {
                 setListing(data.listing);
+                setBookings(data.listing.currentBooking)
             } else {
                 toast.error(data.message || 'Failed to fetch listing details');
             }
@@ -90,7 +91,7 @@ function OneListingProfile() {
         }
     };
 
-  
+
 
     const handleEditListing = () => {
         navigate(`/edit/${list_id}`);
@@ -295,7 +296,7 @@ function OneListingProfile() {
                                 <div className="grid grid-cols-2 gap-3">
                                     <div className="bg-gray-50 p-3 rounded-lg">
                                         <p className="text-xs text-gray-500">Total Bookings</p>
-                                        <p className="text-lg font-semibold text-gray-800">{bookings.length}</p>
+                                        <p className="text-lg font-semibold text-gray-800">{bookings.length || 0}</p>
                                     </div>
                                     <div className="bg-gray-50 p-3 rounded-lg">
                                         <p className="text-xs text-gray-500">Views</p>
@@ -352,20 +353,20 @@ function OneListingProfile() {
                                                         </div>
                                                         <div className="ml-4">
                                                             <div className="text-sm font-medium text-gray-900">
-                                                                {booking.guestName || 'Guest'}
+                                                                {booking.guest?.name || 'Guest'}
                                                             </div>
                                                             <div className="text-sm text-gray-500">
-                                                                {booking.guestEmail || 'Email not available'}
+                                                                {booking.guest?.email || 'Email not available'}
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="text-sm text-gray-900">
-                                                        {booking.checkIn ? new Date(booking.checkIn).toLocaleDateString() : 'Not set'} to
+                                                        {booking.bookingDuration ? new Date(booking.bookingDuration.from).toLocaleDateString() : 'Not set'} to
                                                     </div>
                                                     <div className="text-sm text-gray-500">
-                                                        {booking.checkOut ? new Date(booking.checkOut).toLocaleDateString() : 'Not set'}
+                                                        {booking.bookingDuration ? new Date(booking.bookingDuration.to).toLocaleDateString() : 'Not set'}
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
@@ -373,16 +374,16 @@ function OneListingProfile() {
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(booking.status)}`}>
-                                                        {booking.status || 'Processing'}
+                                                        {booking.paymentStatus || 'Processing'}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     <div className="flex items-center gap-1">
                                                         <Clock className="w-4 h-4" />
-                                                        {booking.bookingDate ? new Date(booking.bookingDate).toLocaleDateString() : 'Unknown'}
+                                                        {booking.createdAt ? new Date(booking.createdAt).toLocaleDateString() : 'Unknown'}
                                                     </div>
                                                 </td>
-                                               
+
                                             </tr>
                                         ))}
                                     </tbody>
@@ -400,7 +401,7 @@ function OneListingProfile() {
                     </div>
                 </div>
             )}
-          
+
         </div>
     )
 }

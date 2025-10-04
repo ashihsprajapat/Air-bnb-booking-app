@@ -10,13 +10,14 @@ const bookingSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    ownerName: {
-        type: String,
-        required: true,
+    onwer: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
     },
     listing: {
         type: Schema.Types.ObjectId,
         ref: "Listing",
+        required: true
     },
 
     bookingDuration: {
@@ -35,6 +36,7 @@ const bookingSchema = new Schema({
         enum: ['pending', 'confirmed', 'cancelled'],
         default: 'pending'
     },
+    transaction:{type:Schema.Types.ObjectId, ref:"Transaction", required:true}
 
 })
 
