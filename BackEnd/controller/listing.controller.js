@@ -118,7 +118,6 @@ export const deleteListing = async (req, res) => {
 //create listing
 export const createListing = async (req, res) => {
     const { title, description, price, address, location, country, guestType, category } = req.body;
-    console.log("req.body is,", title, description, price, address, location, country, guestType, category)
     const userId = req.user;
 
     try {
@@ -143,6 +142,8 @@ export const createListing = async (req, res) => {
             onwer: userId._id, address, guestType, category
         })
         await newListing.save();
+        user.listings.push(newListing._id);
+        await user.save();
 
 
         return res.json({ success: true, newListing })

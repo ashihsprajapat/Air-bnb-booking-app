@@ -115,7 +115,7 @@ function CreateListing() {
                     }
                 })
 
-                console.log(data);
+                console.log(data)
                 setIsLoading(false)
 
                 if (data.success) {
@@ -937,7 +937,7 @@ function CreateListing() {
                         </div>
 
                         <button
-                        disabled={isLoading ? true : false}
+                            disabled={isLoading ? true : false}
                             className={`px-6 py-3 text-base font-medium rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors flex items-center gap-2 `}
                             onClick={(e) => onClickeNextHandle(e)}
                         >
