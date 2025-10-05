@@ -9,16 +9,20 @@ export const protectListing = async (req, res, next) => {
     
     const token = req.headers.token;
     
+    
     if (!token) {
         return res.json({ success: false, message: "User not register" })
     }
     try {
         const decode = jwt.verify(token, process.env.JwT_SECRET)
+       
 
         req.user = await User.findById(decode.id).select('-password')
+       
 
         next();
     } catch (err) {
+        console.log(err)
         res.json({ success: false, message: err.message });
     }
 

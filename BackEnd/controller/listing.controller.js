@@ -142,12 +142,13 @@ export const createListing = async (req, res) => {
             onwer: userId._id, address, guestType, category
         })
         await newListing.save();
-        user.listings.push(newListing._id);
-        await user.save();
+        userId.totalPublicListings?.push(newListing._id);
+        await userId.save();
 
-
+        console.log("listing is created from here")
         return res.json({ success: true, newListing })
     } catch (err) {
+        console.log(err)
         res.json({ success: false, message: err.message })
     }
 

@@ -6,7 +6,7 @@ function HomePageSkeleton() {
     const homePageSkel = Array(7).fill(null);
     return (
         <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-5 my-10 gap-5" >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mx-7 md:mx-28 my-10 gap-5" >
                 {
                     homePageSkel.map((_, i) => (
                         <div key={i} className="flex w-80  flex-col gap-4">

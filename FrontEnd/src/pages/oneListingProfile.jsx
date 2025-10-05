@@ -91,6 +91,7 @@ function OneListingProfile() {
         }
     };
 
+    console.log("listing data is", listing)
 
 
     const handleEditListing = () => {
@@ -233,8 +234,8 @@ function OneListingProfile() {
                                     <div className="flex items-center gap-2">
                                         <Star className="w-5 h-5 text-gray-500" />
                                         <div>
-                                            <p className="text-sm text-gray-500">Rating</p>
-                                            <p className="font-medium text-gray-700">{listing.rating ? `${listing.rating}/5` : 'No ratings yet'}</p>
+                                            <p className="text-sm text-gray-500">reviews</p>
+                                            <p className="font-medium text-gray-700">{listing.reviews?.length  || 'No reviews yet'}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -307,7 +308,7 @@ function OneListingProfile() {
 
                             <div className="flex flex-col gap-3">
                                 <button
-                                    onClick={() => window.open(`/listing/${list_id}`, '_blank')}
+                                    onClick={() => window.open(`/${list_id}`, '_blank')}
                                     className="w-full py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition-colors"
                                 >
                                     View Public Listing

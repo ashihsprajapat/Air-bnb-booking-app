@@ -50,6 +50,9 @@ export const createBooking = async (req, res) => {
         listing.isBook = user._id;
         listing.currentBooking.push( newBooking._id);
         await listing.save();
+        // adding into user totalBookings array
+        user.totalBookings.push(newBooking._id);
+        await user.save();
 
         return res.status(200).json({
             success: true,

@@ -88,7 +88,12 @@ function CreateListing() {
             toast("fill description")
             return
         }
-        else if (currentState === 9) {
+
+
+        if (currentState === 9) {
+
+
+
 
             try {
                 setIsLoading(true)
@@ -115,13 +120,13 @@ function CreateListing() {
                     }
                 })
 
-                console.log(data)
+                console.log("data after calling to create listing", data)
                 setIsLoading(false)
 
                 if (data.success) {
                     toast.success(data.message);
 
-                    navigate("/")
+                    navigate(`/${data.newListing._id}`)
                 } else {
                     toast.error(data.message)
                 }
@@ -129,9 +134,6 @@ function CreateListing() {
             } catch (err) {
                 toast.error(err.message)
             }
-
-
-
         }
 
         setCurrentState(Math.min(9, currentState + 1))
@@ -937,10 +939,11 @@ function CreateListing() {
                         </div>
 
                         <button
-                            disabled={isLoading ? true : false}
+                            disabled={isLoading}
                             className={`px-6 py-3 text-base font-medium rounded-lg bg-purple-600 hover:bg-purple-700 text-white transition-colors flex items-center gap-2 `}
                             onClick={(e) => onClickeNextHandle(e)}
                         >
+                            {currentState === 9 && isLoading && <span className="loading loading-spinner loading-sm"></span>}
                             {currentState === 9 ? "Publish listing" : "Next"}
                             {currentState !== 9 && <ArrowRight className="w-5 h-5" />}
                         </button>

@@ -82,11 +82,11 @@ function ProfileShow() {
                     {/* Stats */}
                     <div className="p-4 grid grid-cols-2 gap-3 border-b border-gray-200">
                         <div className="bg-rose-50 rounded-lg p-3 text-center">
-                            <p className="text-2xl font-bold text-rose-600">{userData?.totalPublicListings || 0}</p>
+                            <p className="text-2xl font-bold text-rose-600">{userData?.totalPublicListings?.length || 0}</p>
                             <p className="text-xs text-gray-600 mt-1">Public Listings</p>
                         </div>
                         <div className="bg-blue-50 rounded-lg p-3 text-center">
-                            <p className="text-2xl font-bold text-blue-600">{userData?.totalBookings || 0}</p>
+                            <p className="text-2xl font-bold text-blue-600">{userData?.totalBookings?.length || 0}</p>
                             <p className="text-xs text-gray-600 mt-1">Total Bookings</p>
                         </div>
                     </div>

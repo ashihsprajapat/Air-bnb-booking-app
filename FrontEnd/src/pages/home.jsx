@@ -65,9 +65,7 @@ function Home() {
         return matchesSearch && matchesCategory;
     });
 
-    if (isHomePageLoading) {
-        return <HomePageSkeleton />
-    }
+
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -117,21 +115,26 @@ function Home() {
                 </div>
             </div>
 
-            {/* Listings Section */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
-                {filteredListings.length === 0 ? (
-                    <div className="text-center py-12">
-                        <p className="text-gray-500 text-lg">No listings found. Try a different search or category.</p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                        {filteredListings.map((listing, i) => (
-                            <LisitngCard key={i} listing={listing} />
-                        ))}
-                    </div>
-                )}
-            </div>
+            {isHomePageLoading ?
+                <HomePageSkeleton />
+                :
 
+
+
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+                    {filteredListings.length === 0 ? (
+                        <div className="text-center py-12">
+                            <p className="text-gray-500 text-lg">No listings found. Try a different search or category.</p>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                            {filteredListings.map((listing, i) => (
+                                <LisitngCard key={i} listing={listing} />
+                            ))}
+                        </div>
+                    )}
+                </div>
+            }
             {/* Mobile App Banner */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
                 <div className="bg-gradient-to-r from-indigo-50 to-rose-50 rounded-2xl overflow-hidden shadow-lg">
