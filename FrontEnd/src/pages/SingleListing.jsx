@@ -38,7 +38,7 @@ function SingleListing() {
         setIsLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/${id}`)
-            console.log("single listing data is ", data)
+           // console.log("single listing data is ", data)
             if (data.success) {
                 setListing(data.listing);
                 if (data.listing && data.listing.image && data.listing.image.length > 0) {
@@ -199,7 +199,7 @@ function SingleListing() {
 
 
     const initPay = async (order) => {
-        console.log("calling to verify function1")
+        //console.log("calling to verify function1")
         const options = {
             key: import.meta.env.VITE_ROZORPAY_ID,
             amount: order.amount,
@@ -209,12 +209,11 @@ function SingleListing() {
             order_id: order.id,
             receipt: order.receipt,
             handler: async (response) => {
-                console.log(response);
+               // console.log(response);
                 const token = userToken;
                 try {
-                    console.log("calling to verify function")
                     const { data } = await axios.post(`${backendUrl}/transaction/verify`, response, { headers: { token: userToken } })
-                    console.log("getting data after verifying ", data)
+                    
                     if (data.success) {
                         toast.success(data.message)
                         Navigate(`/profile/${userData._id}/all-booking`)
@@ -246,8 +245,7 @@ function SingleListing() {
 
 
             const { data } = await axios.post(`${backendUrl}/transaction/payment/${id}`, bookingData, { headers: { token: userToken } })
-            console.log("data after calling to razorpay -razor", data);
-
+            
             if (data.success) {
                 initPay(data.order);
 

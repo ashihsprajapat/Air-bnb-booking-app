@@ -40,7 +40,7 @@ function Home() {
         setHomePageLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/`)
-            console.log("all listing are", data)
+          //  console.log("all listing are", data)
             setListings(data.Listings.reverse())
         } catch (err) {
             console.log(err)

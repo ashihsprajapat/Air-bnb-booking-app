@@ -46,7 +46,7 @@ export const paymnetRazorPay = async (req, res) => {
 
         await razorpayInstance.orders.create(options, (err, order) => {
             if (err) return res.json({ message: err, success: false });
-            console.log("from here transaction is done")
+           // console.log("from here transaction is done")
             res.json({ success: true, order });
         });
     } catch (error) {

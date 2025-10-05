@@ -18,7 +18,7 @@ function AllBookingListingProfile() {
             const { data } = await axios.get(`${backendUrl}/booking/user-bookings`, {
                 headers: { token: userToken }
             });
-            console.log("geting all booking listing are", data)
+           // console.log("geting all booking listing are", data)
 
             if (data.success) {
                 setBookings(data.bookings || []);

@@ -17,19 +17,19 @@ function EditListing() {
 
     const getListingDetailas = async () => {
         try {
-            console.log("get all listing details triger")
+           // console.log("get all listing details triger")
 
             const { data } = await axios.get(`${backendUrl}/listing/${id}`);
 
-            console.log("Fetch listing detilas", data)
-            console.log("api call")
+           // console.log("Fetch listing detilas", data)
+           // console.log("api call")
 
         } catch (err) {
             toast.error(err.message)
         }
     }
 
-    console.log("Edit Listing is ", editListing)
+  //  console.log("Edit Listing is ", editListing)
 
 
     return (

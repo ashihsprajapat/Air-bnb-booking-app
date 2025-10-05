@@ -32,7 +32,7 @@ function OneListingProfile() {
                 headers: { token: userToken }
             });
 
-            console.log("Fetch listing detilas", data)
+           // console.log("Fetch listing detilas", data)
 
             if (data.success) {
                 setListing(data.listing);
@@ -77,7 +77,7 @@ function OneListingProfile() {
                 headers: { token: userToken }
             });
 
-            console.log("Delete listing data is ", data)
+          //  console.log("Delete listing data is ", data)
 
             if (data.success) {
                 toast.success('Listing deleted successfully');
@@ -91,7 +91,7 @@ function OneListingProfile() {
         }
     };
 
-    console.log("listing data is", listing)
+    //console.log("listing data is", listing)
 
 
     const handleEditListing = () => {

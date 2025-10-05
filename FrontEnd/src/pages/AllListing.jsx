@@ -17,7 +17,7 @@ function AllListing() {
         setHomePageLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/`)
-            console.log("loading all listing host by user ",data)
+          //  console.log("loading all listing host by user ",data)
             setListings(data.Listings)
         } catch (err) {
             console.log(err)

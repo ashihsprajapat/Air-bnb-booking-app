@@ -32,7 +32,7 @@ export const createReview = async (req, res) => {
 
 //delte a revie for a listing
 export const deleteRevie = async (req, res) => {
-    console.log("delete review function invoke")
+   // console.log("delete review function invoke")
     const { Lid, Rid } = req.params;
 
     try {
