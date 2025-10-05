@@ -8,7 +8,7 @@ import { MapPin, IndianRupee, Calendar, User, Home, Star, Edit, Trash2, Clock, M
 import toast from 'react-hot-toast';
 
 function OneListingProfile() {
-    const { userData, backendUrl, userToken, navigate } = useContext(AppContext);
+    const { userData, backendUrl, userToken, navigate, setEditListing } = useContext(AppContext);
     const { list_id } = useParams();
 
 
@@ -95,7 +95,8 @@ function OneListingProfile() {
 
 
     const handleEditListing = () => {
-        navigate(`/edit/${list_id}`);
+        setEditListing(listing);
+        navigate(`/${list_id}/edit`);
     };
 
     if (isLoading) {

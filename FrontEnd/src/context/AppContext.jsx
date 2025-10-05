@@ -28,6 +28,8 @@ export const AppContextProvider = (props) => {
 
     const [listing, setListing] = useState(null);
 
+    const [editListing, setEditListing]= useState(null);
+
     //for login and signup state handling
     const [state, setState] = useState('Login');
 
@@ -82,7 +84,8 @@ export const AppContextProvider = (props) => {
         isHomePageLoading, setHomePageLoading,
         isLisingLoading, setIsListingLoading,
         logoutFormShow, setLogoutFormShow,
-        listing, setListing
+        listing, setListing,
+        editListing, setEditListing
     }
 
     return (

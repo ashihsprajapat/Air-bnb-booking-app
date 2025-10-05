@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import AppContext from '../context/AppContext';
 import axios from 'axios';
@@ -217,6 +217,7 @@ function SingleListing() {
                     console.log("getting data after verifying ", data)
                     if (data.success) {
                         toast.success(data.message)
+                        Navigate(`/profile/${userData._id}/all-booking`)
 
                     }
                 } catch (error) {

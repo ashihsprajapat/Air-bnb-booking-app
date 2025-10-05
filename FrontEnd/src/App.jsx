@@ -62,7 +62,7 @@ function App() {
 
         <Route path="/:id" element={<SingleListing />} />
 
-        <Route path="/edit/:id" element={<EditListing />} />
+        <Route path="/:id/edit" element={<EditListing />} />
       </Routes>
 
       <Toaster
