@@ -55,7 +55,7 @@ await connectToDataBase()
   })
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => { res.json({ working: "good" }) })
+app.get("/", (req, res) => { res.send( "Api is working fine" ) })
 
 
 //connect to cloudinary
