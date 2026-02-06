@@ -22,6 +22,8 @@ console.log("Ok its working ")
         }
 
          const payload = JSON.stringify(req.body);
+         
+        console.log("User created")
 
         try {
             webhook.verify(payload, svixHeaders);
@@ -30,6 +32,7 @@ console.log("Ok its working ")
             return res.status(401).json({ success: false, message: 'Invalid webhook signature' });
         }
 
+        
 
          const { type, data } = req.body;
           switch (type) {
