@@ -12,6 +12,7 @@ export const webhooks= async(req, res)=>{
 
 
     const webhook = new Webhook(process.env.CLERK_WEBHOOKS_SECRET);
+console.log("Ok its working ")
 
         // Verify webhook signature
         const svixHeaders = {
