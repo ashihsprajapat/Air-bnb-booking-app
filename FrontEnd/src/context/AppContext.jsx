@@ -2,6 +2,7 @@ import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton, useUser } from '@clerk/clerk-react';
 
 const AppContext = createContext("");
 
@@ -28,7 +29,8 @@ export const AppContextProvider = (props) => {
 
     const [listing, setListing] = useState(null);
 
-    const [editListing, setEditListing]= useState(null);
+    const [editListing, setEditListing] = useState(null);
+    const { user, isSignedIn } = useUser()
 
     //for login and signup state handling
     const [state, setState] = useState('Login');
@@ -85,7 +87,9 @@ export const AppContextProvider = (props) => {
         isLisingLoading, setIsListingLoading,
         logoutFormShow, setLogoutFormShow,
         listing, setListing,
-        editListing, setEditListing
+        editListing, setEditListing,
+        SignedIn, SignedOut, SignInButton, SignUpButton, UserButton,
+        user, isSignedIn
     }
 
     return (
