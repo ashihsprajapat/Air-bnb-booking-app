@@ -3,6 +3,8 @@ import dotenv from "dotenv"
 //if (process.env.NODE_ENV != "production") {
 dotenv.config();
 //}
+import { clerkMiddleware } from '@clerk/express'
+import {  clerkClient, requireAuth, getAuth } from '@clerk/express'
 
 
 
@@ -24,6 +26,8 @@ const app = express();
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use(clerkMiddleware())
 
 
 const allowedOrigins = ['http://localhost:5173', 'https://air-bnb-booking-app-psi.vercel.app']; // Add production domain here
@@ -53,7 +57,7 @@ await connectToDataBase()
   .then(() => {
     console.log("connect to data base");
   })
-  .catch(err => console.log(err));
+  .catch(err => console.log("error create at connecting to mongose atlash ",err));
 
 app.get("/", (req, res) => { res.send( "Api is working fine" ) })
 

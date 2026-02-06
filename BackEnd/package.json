@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@clerk/express": "^1.7.69",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cloudinary": "^1.41.3",
@@ -29,6 +30,7 @@
     "passport-local-mongoose": "^8.0.0",
     "path": "^0.12.7",
     "razorpay": "^2.9.6",
-    "stripe": "^18.4.0"
+    "stripe": "^18.4.0",
+    "svix": "^1.84.1"
   }
 }
