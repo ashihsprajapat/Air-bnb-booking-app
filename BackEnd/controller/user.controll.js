@@ -21,14 +21,8 @@ console.log("Ok its working ")
             'svix-signature': req.headers['svix-signature'],
         }
 
-        const payload = JSON.stringify(req.body);
-
-         try {
-            webhook.verify(payload, svixHeaders);
-        } catch (err) {
-            console.error('Webhook verification failed:', err);
-            return res.status(401).json({ success: false, message: 'Invalid webhook signature' });
-        }
+        const payload = req.body; // Buffer
+webhook.verify(payload, svixHeaders);
 
          const { type, data } = req.body;
           switch (type) {

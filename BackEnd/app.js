@@ -27,7 +27,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.use(clerkMiddleware())
+
 
 
 const allowedOrigins = ['http://localhost:5173', 'https://air-bnb-booking-app-psi.vercel.app']; // Add production domain here
