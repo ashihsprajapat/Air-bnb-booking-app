@@ -1,7 +1,7 @@
 
-import React, { useContext } from 'react'
+
+import { useContext } from 'react';
 import AppContext from '../context/AppContext'
-import { Link } from 'react-router-dom';
 import { MapPin, IndianRupee, Calendar, Eye, Edit, ArrowRight } from 'lucide-react';
 
 function ListingCardProfile({ userData, listing }) {

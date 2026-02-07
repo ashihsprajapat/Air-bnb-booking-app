@@ -1,134 +1,114 @@
+import { useContext, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import React, { useContext } from 'react'
-<<<<<<< HEAD
 import AppContext from '../context/AppContext';
 import { assets } from './../assets/assets';
-import { NavLink } from 'react-router-dom';
-=======
-import { NavLink } from 'react-router-dom';
-import AppContext from '../context/AppContext';
-import { assets } from './../assets/assets';
->>>>>>> 0384ea23cbab8fba40603ece82cba8de7ac7b381
 
 function Navbar() {
-    const [open, setOpen] = React.useState(false)
+    const [open, setOpen] = useState(false);
 
-
-<<<<<<< HEAD
-    const {  navigate, userData, setState } = useContext(AppContext)
-=======
-    const { navigate, userData, setMenuBarShow, setState } = useContext(AppContext)
->>>>>>> 0384ea23cbab8fba40603ece82cba8de7ac7b381
-
-
-
+    const { navigate, userData, setMenuBarShow, setState } =
+        useContext(AppContext);
 
     return (
-        <>
-            <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
+        <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative">
 
-                {/* logo of navbar  */}
-                <NavLink to="/" className="m-0 mt-0"  >
+            {/* Logo */}
+            <NavLink to="/">
+                <img
+                    className="w-20 sm:w-24 md:w-28 lg:w-32 cursor-pointer"
+                    src={assets.logo_2}
+                    alt="logo"
+                    onClick={() => navigate('/')}
+                />
+            </NavLink>
 
-                    <img className='  w-20 sm:w-24 md:w-28 lg:w-32 '
-                        src={assets.logo_2}
-                        onClick={() => navigate("/")} alt="" />
+            {/* Desktop Menu */}
+            <div className="hidden sm:flex items-center gap-8">
+
+                {/* Search */}
+                <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
+                    <input
+                        className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
+                        type="text"
+                        placeholder="Search products"
+                    />
+                </div>
+
+                <NavLink to="/host/homes">Air bnb Your Home</NavLink>
+
+                {/* Profile / Login */}
+                {userData ? (
+                    <div
+                        onClick={() => {
+                            setMenuBarShow(true);
+                            navigate(`/profile/${userData._id}/all-listings`);
+                        }}
+                        className="bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600"
+                    >
+                        {userData.name[0].toUpperCase()}
+                    </div>
+                ) : (
+                    <button
+                        className="px-8 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full"
+                        onClick={() => {
+                            setState('Login');
+                            navigate('/auth');
+                        }}
+                    >
+                        Login
+                    </button>
+                )}
+            </div>
+
+            {/* Mobile Menu Button */}
+            <button
+                onClick={() => setOpen(!open)}
+                aria-label="Menu"
+                className="sm:hidden"
+            >
+                <svg width="21" height="15" viewBox="0 0 21 15">
+                    <rect width="21" height="1.5" rx=".75" fill="#426287" />
+                    <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
+                    <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
+                </svg>
+            </button>
+
+            {/* Mobile Menu */}
+            <div
+                className={`${open ? 'flex' : 'hidden'
+                    } absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col gap-3 px-5 text-sm sm:hidden`}
+            >
+                <NavLink to="/host/homes" onClick={() => setOpen(false)}>
+                    Air bnb your home
                 </NavLink>
 
-                {/* Desktop Menu */}
-                <div className="hidden sm:flex items-center gap-8">
-
-
-
-                    <div className="hidden lg:flex items-center text-sm gap-2 border border-gray-300 px-3 rounded-full">
-                        <input className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500" type="text" placeholder="Search products" />
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M10.836 10.615 15 14.695" stroke="#7A7B7D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-                            <path clip-rule="evenodd" d="M9.141 11.738c2.729-1.136 4.001-4.224 2.841-6.898S7.67.921 4.942 2.057C2.211 3.193.94 6.281 2.1 8.955s4.312 3.92 7.041 2.783" stroke="#7A7B7D" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
+                {userData ? (
+                    <div
+                        className="bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600 w-fit"
+                        onClick={() => {
+                            setMenuBarShow(true);
+                            navigate(`/profile/${userData._id}/all-listings`);
+                            setOpen(false);
+                        }}
+                    >
+                        {userData.name[0].toUpperCase()}
                     </div>
-
-                    <NavLink to="/host/homes"> Air bnb Your Home</NavLink>
-
-<<<<<<< HEAD
-                    <span>
-=======
-                    <NavLink onClick={() => setMenuBarShow(true)}>
->>>>>>> 0384ea23cbab8fba40603ece82cba8de7ac7b381
-                        {
-                            userData ?
-                                <p className='bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600'
-                                    onClick={() => navigate(`/profile/${userData._id}/all-listings`)} >
-                                    {userData.name[0].toUpperCase()}</p>
-                                :
-                                <button className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full"
-                                    onClick={() => { navigate("/auth") }}>
-                                    Login
-                                </button>
-                        }
-                    </span>
-
-
-
-
-
-                </div>
-
-                <button onClick={() => open ? setOpen(false) : setOpen(true)} aria-label="Menu" className="sm:hidden">
-                    {/* Menu Icon SVG */}
-                    <svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="21" height="1.5" rx=".75" fill="#426287" />
-                        <rect x="8" y="6" width="13" height="1.5" rx=".75" fill="#426287" />
-                        <rect x="6" y="13" width="15" height="1.5" rx=".75" fill="#426287" />
-                    </svg>
-                </button>
-
-                {/* Mobile Menu */}
-                <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}>
-                    <NavLink to="/host/homes" className="block"
-                        onClick={() => setOpen(false)}>Air bnb your home</NavLink>
-<<<<<<< HEAD
-                    {
-                        userData ?
-                            <p className='bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600'
-                                onClick={() => navigate(`/profile/${userData._id}/all-listings`)} >
-                                {userData.name[0].toUpperCase()}</p>
-                            :
-                            <button className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm"
-                                onClick={() => { setState("Login"); navigate("/auth"); setOpen(false) }}>
-                                Login
-                            </button>
-                    }
-=======
-                    <NavLink onClick={() => setMenuBarShow(true)}>
-                        {
-                            userData ?
-                                <p className='bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600' >  {userData.name[0].toUpperCase()}</p>
-
-                                :
-                                (
-                                    <button className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm"
-                                        onClick={() => { setState("Login"); navigate("/auth"); setOpen(false) }}>
-                                        Login
-                                    </button>
-                                )
-
-                        }
-                    </NavLink>
-
->>>>>>> 0384ea23cbab8fba40603ece82cba8de7ac7b381
-
-                </div>
-
-            </nav >
-
-
-
-
-
-        </>
-
-    )
+                ) : (
+                    <button
+                        className="px-6 py-2 bg-indigo-500 hover:bg-indigo-600 text-white rounded-full w-fit"
+                        onClick={() => {
+                            setState('Login');
+                            navigate('/auth');
+                            setOpen(false);
+                        }}
+                    >
+                        Login
+                    </button>
+                )}
+            </div>
+        </nav>
+    );
 }
 
-export default Navbar
+export default Navbar;
