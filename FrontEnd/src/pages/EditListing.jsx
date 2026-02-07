@@ -1,14 +1,14 @@
 
 
 
-import React, { useContext, useEffect } from 'react'
+import  { useContext, useEffect } from 'react'
 import AppContext from '../context/AppContext'
 import { toast } from 'react-toastify'
 import { useParams } from 'react-router-dom'
 
 function EditListing() {
 
-    const { axios, backendUrl, userToken ,editListing,setEditListing} = useContext(AppContext)
+    const { axios, backendUrl ,editListing,setEditListing} = useContext(AppContext)
     const { id } = useParams()
 
     useEffect(() => {

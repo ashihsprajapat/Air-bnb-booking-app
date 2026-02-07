@@ -1,15 +1,14 @@
-import React, { useContext, useState } from 'react'
+import { useContext, useState } from 'react'
 import AppContext from '../context/AppContext'
-import { Link } from 'react-router-dom'
-import { LogOut, Settings, User, Home, X } from 'lucide-react';
+import { LogOut, Settings } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 function MenubarShow() {
 
     const { setUserToken,
         navigate,
-        userData, setUserData,
-        menuBarShow, setMenuBarShow,
+        userData,
+        setMenuBarShow,
         setState } = useContext(AppContext)
 
     const [logoutFormShow, setLogoutFormShow] = useState(false)

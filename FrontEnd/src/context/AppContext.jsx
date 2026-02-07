@@ -12,6 +12,10 @@ export const AppContextProvider = (props) => {
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL
 
+    const [listings, setListings] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [activeCategory, setActiveCategory] = useState('All');
+
     const [menuBarShow, setMenuBarShow] = useState(false);
 
     const [isLoading, setIsLoading] = useState(false);
@@ -28,7 +32,33 @@ export const AppContextProvider = (props) => {
 
     const [listing, setListing] = useState(null);
 
-    const [editListing, setEditListing]= useState(null);
+    const [editListing, setEditListing] = useState(null);
+
+    //fetching all listing 
+    const allData = async () => {
+        setHomePageLoading(true);
+        try {
+            const { data } = await axios.get(`${backendUrl}/listing/`)
+            //  console.log("all listing are", data)
+            setListings(data.Listings.reverse())
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setHomePageLoading(false);
+        }
+    }
+
+    //filtering listing 
+    const filteredListings = listings.filter(listing => {
+        const matchesSearch = searchQuery === '' ||
+            listing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            listing.location.toLowerCase().includes(searchQuery.toLowerCase());
+
+        const matchesCategory = activeCategory === 'All' ||
+            listing.category === activeCategory;
+
+        return matchesSearch && matchesCategory;
+    });
 
     //for login and signup state handling
     const [state, setState] = useState('Login');
@@ -85,7 +115,12 @@ export const AppContextProvider = (props) => {
         isLisingLoading, setIsListingLoading,
         logoutFormShow, setLogoutFormShow,
         listing, setListing,
-        editListing, setEditListing
+        editListing, setEditListing,
+        allData,filteredListings,
+        listings, setListings,
+        searchQuery, setSearchQuery,
+        activeCategory, setActiveCategory
+
     }
 
     return (

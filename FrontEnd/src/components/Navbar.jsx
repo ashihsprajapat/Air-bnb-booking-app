@@ -1,31 +1,17 @@
 
 import React, { useContext } from 'react'
-import { Link, NavLink } from 'react-router-dom';
 import AppContext from '../context/AppContext';
-import MenuIcon from '@mui/icons-material/Menu';
-import PersonIcon from '@mui/icons-material/Person';
-import CloseIcon from '@mui/icons-material/Close';
 import { assets } from './../assets/assets';
-import AddHomeWorkIcon from '@mui/icons-material/AddHomeWork';
-import { toast } from 'react-toastify';
+import { NavLink } from 'react-router-dom';
 
 function Navbar() {
     const [open, setOpen] = React.useState(false)
 
-    const isHostAirbnb = location.pathname.includes("/host/homes")
 
-    const isbecomHouse = location.pathname.includes("/become-a-host")
-
-    const { setUserToken, navigate, userData, setUserData, menuBarShow, setMenuBarShow, setState } = useContext(AppContext)
+    const {  navigate, userData, setState } = useContext(AppContext)
 
 
-    const logout = async () => {
-        localStorage.removeItem('air_bnb_token')
-        setUserToken(null)
 
-        toast.success("logout success full")
-        navigate("/")
-    }
 
     return (
         <>
@@ -158,17 +144,19 @@ function Navbar() {
 
                     <NavLink to="/host/homes"> Air bnb Your Home</NavLink>
 
-                    <NavLink onClick={e => setMenuBarShow(true)}>
+                    <span>
                         {
                             userData ?
-                                <p className='bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600' >  {userData.name[0].toUpperCase()}</p>
+                                <p className='bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600'
+                                    onClick={() => navigate(`/profile/${userData._id}/all-listings`)} >
+                                    {userData.name[0].toUpperCase()}</p>
                                 :
                                 <button className="cursor-pointer px-8 py-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full"
-                                    onClick={() => { navigate("/auth"); setState("Login") }}>
+                                    onClick={() => { navigate("/auth") }}>
                                     Login
                                 </button>
                         }
-                    </NavLink>
+                    </span>
 
 
 
@@ -189,14 +177,21 @@ function Navbar() {
                 <div className={`${open ? 'flex' : 'hidden'} absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}>
                     <NavLink to="/host/homes" className="block"
                         onClick={() => setOpen(false)}>Air bnb your home</NavLink>
+                    {
+                        userData ?
+                            <p className='bg-blue-700 px-3 py-1.5 rounded-full text-white font-semibold cursor-pointer hover:bg-blue-600'
+                                onClick={() => navigate(`/profile/${userData._id}/all-listings`)} >
+                                {userData.name[0].toUpperCase()}</p>
+                            :
+                            <button className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm"
+                                onClick={() => { setState("Login"); navigate("/auth"); setOpen(false) }}>
+                                Login
+                            </button>
+                    }
 
-                    <button className="cursor-pointer px-6 py-2 mt-2 bg-indigo-500 hover:bg-indigo-600 transition text-white rounded-full text-sm"
-                        onClick={e => { setState("Login"); navigate("/auth"); setOpen(false) }}>
-                        Login
-                    </button>
                 </div>
 
-            </nav>
+            </nav >
 
 
 

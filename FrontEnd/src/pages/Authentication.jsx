@@ -1,10 +1,9 @@
 
-import React, { useContext, useState } from 'react'
+import  { useContext, useState } from 'react'
 import { assets } from './../assets/assets';
 import AppContext from '../context/AppContext';
 import axios from 'axios'
 import toast from 'react-hot-toast';
-import { Loader } from 'lucide-react';
 
 
 function Authentication() {
@@ -15,7 +14,6 @@ function Authentication() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [Image, setImage] = useState(null);
 
     const onSubmithandler = async (e) => {
         e.preventDefault();
@@ -186,7 +184,7 @@ function Authentication() {
                 <div className="mt-6 text-center text-sm">
                     {state === 'Login' ? (
                         <p className="text-gray-600">
-                            Don't have an account?{' '}
+                            Don&apos;t have an account?{' '}
                             <button 
                                 type="button"
                                 className="font-medium text-primary hover:text-primary-focus transition-colors duration-200"

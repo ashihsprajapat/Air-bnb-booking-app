@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import  { useContext, useState } from 'react'
 import HomeIcon from '@mui/icons-material/Home';
 import DoorBackIcon from '@mui/icons-material/DoorBack';
 import BroadcastOnPersonalIcon from '@mui/icons-material/BroadcastOnPersonal';
@@ -11,17 +11,15 @@ import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 import CastleIcon from '@mui/icons-material/Castle';
 import FortIcon from '@mui/icons-material/Fort';
 import BalconyIcon from '@mui/icons-material/Balcony';
-import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
 import { toast } from 'react-toastify';
-import { assets } from '../assets/assets';
 import AppContext from '../context/AppContext';
 import axios from 'axios';
 import { ArrowLeft, ArrowRight, Check, Home, MapPin, Upload, Image, PenSquare, IndianRupee } from 'lucide-react';
 
 function CreateListing() {
-    const { backendUrl, userToken, navigate, isLisingLoading, setIsListingLoading } = useContext(AppContext);
+    const { backendUrl, userToken, navigate } = useContext(AppContext);
 
     const [currentState, setCurrentState] = useState(1);
     const [guestType, setGuestType] = useState(null);
@@ -106,7 +104,7 @@ function CreateListing() {
                 formData.append('category', category)
                 formData.append('address', address)
                 formData.append('price', price)
-                image.forEach((file, index) => {
+                image.forEach((file) => {
                     formData.append("image", file);  // 'image' is the name in the backend (multer expects "image" as the field name)
                 });
 
@@ -433,7 +431,7 @@ function CreateListing() {
                     {
                         currentState === 3 &&
                         <div className='max-w-2xl mx-auto px-6 py-16'>
-                            <h1 className='text-3xl font-bold text-gray-900 mb-10 text-center'>Now, let's give your place a title and price</h1>
+                            <h1 className='text-3xl font-bold text-gray-900 mb-10 text-center'>Now, let&apos;s give your place a title and price</h1>
 
                             <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-8'>
                                 <div className='mb-6'>
@@ -489,8 +487,8 @@ function CreateListing() {
                     {
                         currentState === 4 &&
                         <div className='max-w-3xl mx-auto px-6 py-16'>
-                            <h1 className='text-3xl font-bold text-gray-900 mb-6 text-center'>Where's your place located?</h1>
-                            <p className='text-gray-500 text-center mb-10'>Your address is only shared with guests after they've made a reservation.</p>
+                            <h1 className='text-3xl font-bold text-gray-900 mb-6 text-center'>Where&apos;s your place located?</h1>
+                            <p className='text-gray-500 text-center mb-10'>Your address is only shared with guests after they&apos;ve made a reservation.</p>
 
                             <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-8 mb-6'>
                                 <div className='flex items-center gap-3 mb-6'>
@@ -534,7 +532,7 @@ function CreateListing() {
                         currentState === 5 &&
                         <div className='max-w-3xl mx-auto px-6 py-16'>
                             <h1 className='text-3xl font-bold text-gray-900 mb-6 text-center'>Confirm your address</h1>
-                            <p className='text-gray-500 text-center mb-10'>Your address is only shared with guests after they've made a reservation</p>
+                            <p className='text-gray-500 text-center mb-10'>Your address is only shared with guests after they&apos;ve made a reservation</p>
 
                             <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-8'>
                                 <div className='flex items-center gap-3 mb-6'>
@@ -665,7 +663,7 @@ function CreateListing() {
                         currentState === 6 &&
                         <div className='max-w-3xl mx-auto px-6 py-16'>
                             <h1 className='text-3xl font-bold text-gray-900 mb-6 text-center'>Add photos of your place</h1>
-                            <p className='text-gray-500 text-center mb-10'>You'll need some photos to get started. You can add more or make changes later.</p>
+                            <p className='text-gray-500 text-center mb-10'>You&apos;ll need some photos to get started. You can add more or make changes later.</p>
 
                             <div className='bg-white rounded-xl shadow-sm border border-gray-200 p-8'>
                                 <div className='flex items-center gap-3 mb-6'>
@@ -865,7 +863,7 @@ function CreateListing() {
                         currentState === 9 &&
                         <div className='max-w-4xl mx-auto px-6 py-16'>
                             <h1 className='text-3xl font-bold text-gray-900 mb-6 text-center'>Ready to publish your listing</h1>
-                            <p className='text-gray-500 text-center mb-10'>You're almost there! Review everything one last time before publishing.</p>
+                            <p className='text-gray-500 text-center mb-10'>You&apos;re almost there! Review everything one last time before publishing.</p>
 
                             <div className='bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden'>
                                 <div className='grid md:grid-cols-2'>

@@ -1,13 +1,13 @@
 
 
-import React, { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import AppContext from '../context/AppContext'
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { Calendar, MapPin, User, Clock, Home } from 'lucide-react';
+import { Calendar, MapPin, Clock, Home } from 'lucide-react';
 
 function AllBookingListingProfile() {
-    const { userData, navigate, backendUrl, userToken } = useContext(AppContext);
+    const {  navigate, backendUrl, userToken } = useContext(AppContext);
     const [bookings, setBookings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -141,7 +141,7 @@ function AllBookingListingProfile() {
                         <Calendar className="w-16 h-16 text-gray-300" />
                     </div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">No Bookings Found</h3>
-                    <p className="text-gray-500 mb-6">You haven't made any bookings yet.</p>
+                    <p className="text-gray-500 mb-6">You haven&apos;t made any bookings yet.</p>
                     <button
                         onClick={() => navigate('/')}
                         className="px-4 py-2 bg-rose-500 text-white rounded-lg hover:bg-rose-600 transition-colors"

@@ -1,9 +1,9 @@
 
-import React, { useContext, useEffect, useState } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import AppContext from '../context/AppContext'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
-import { MapPin, IndianRupee, Calendar, User, Home, Star, Edit, Trash2, Clock, MessageSquare } from 'lucide-react'
+import { MapPin, IndianRupee, Calendar, User, Home, Star, Edit, Trash2, Clock, } from 'lucide-react'
 
 import toast from 'react-hot-toast';
 
@@ -68,7 +68,7 @@ function OneListingProfile() {
 
     const handleDeleteListing = async () => {
         if (!window.confirm('Are you sure you want to delete this listing? This action cannot be undone.')) {
-
+            console.log("")
         }
 
         try {

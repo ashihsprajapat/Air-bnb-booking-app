@@ -1,16 +1,17 @@
 
-import React, { useContext, useState, useEffect } from 'react'
-import { Outlet, Link, useLocation, useParams, NavLink, useNavigate } from 'react-router-dom'
+import  { useContext, useState, useEffect } from 'react'
+import { Outlet, useLocation, useParams, NavLink, useNavigate } from 'react-router-dom'
 import { assets } from './../assets/assets';
 import AppContext from './../context/AppContext';
-import { Home, List, Calendar, Settings, LogOut, User } from 'lucide-react';
+import { Home, List, Calendar, LogOut, User } from 'lucide-react';
+import { toast } from 'react-toastify';
 
 function ProfileShow() {
     const navigate = useNavigate();
     const location = useLocation();
     const [currDashboard, setCurrDashboard] = useState(0);
     const { id } = useParams();
-    const { userData, userToken } = useContext(AppContext);
+    const { userData,setUserData,setUserToken } = useContext(AppContext);
 
     // Set active tab based on current path
     useEffect(() => {
@@ -23,6 +24,13 @@ function ProfileShow() {
             setCurrDashboard(1);
         }
     }, [location.pathname]);
+
+    useEffect(()=>{
+        if(!userData){
+            navigate("/")
+        }
+        
+    },[])
 
 
     const sidebarLinks = [
@@ -59,7 +67,8 @@ function ProfileShow() {
                     <button
                         onClick={() => {
                             localStorage.removeItem('air_bnb_token');
-                            setUserToken(null)
+                            setUserToken("token is null ",null)
+                            setUserData(null);
                             navigate('/');
                         }}
                         className='flex items-center gap-1 border border-gray-300 rounded-full text-sm px-3 py-1.5 hover:bg-gray-100 transition-colors'

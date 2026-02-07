@@ -1,8 +1,8 @@
 
-import { IndianRupee, MapPin, Star, Calendar } from 'lucide-react';
-import React from 'react'
+import { IndianRupee, MapPin, Calendar } from 'lucide-react';
 
-function LisitngCard({ listing }) {
+
+function LisitngCard({ listing  }) {
     // Function to truncate description to a specific length
     const truncateText = (text, maxLength) => {
         if (!text) return "";

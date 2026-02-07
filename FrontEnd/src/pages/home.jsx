@@ -1,12 +1,9 @@
 
-import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect } from "react";
 import AppContext from "../context/AppContext";
 import LisitngCard from "../components/LisitngCard";
 import HomePageSkeleton from './../components/skeletons/HomePageSkeleton';
-import { Search, MapPin, Home as HomeIcon, Smartphone } from 'lucide-react';
-import CastleIcon from '@mui/icons-material/Castle';
+import { Search, Home as HomeIcon, Smartphone } from 'lucide-react';
 import FortIcon from '@mui/icons-material/Fort';
 import BusinessIcon from '@mui/icons-material/Business';
 import CottageIcon from '@mui/icons-material/Cottage';
@@ -17,10 +14,10 @@ import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 import BalconyIcon from '@mui/icons-material/Balcony';
 
 function Home() {
-    const { backendUrl, isHomePageLoading, setHomePageLoading } = useContext(AppContext);
-    const [listings, setListings] = useState([]);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [activeCategory, setActiveCategory] = useState('All');
+    const {  isHomePageLoading,  allData, filteredListings,
+        listings, 
+        searchQuery, setSearchQuery,
+        activeCategory, setActiveCategory } = useContext(AppContext);
 
     const categories = [
         { name: 'All', },
@@ -36,34 +33,16 @@ function Home() {
         { name: 'Cave', icon: <BalconyIcon size={18} /> }
     ];
 
-    const allData = async () => {
-        setHomePageLoading(true);
-        try {
-            const { data } = await axios.get(`${backendUrl}/listing/`)
-          //  console.log("all listing are", data)
-            setListings(data.Listings.reverse())
-        } catch (err) {
-            console.log(err)
-        } finally {
-            setHomePageLoading(false);
-        }
-    }
+
 
     useEffect(() => {
-        allData()
+        if (listings.length == 0)
+            allData()
+
     }, [])
 
     // Filter listings based on search query and category
-    const filteredListings = listings.filter(listing => {
-        const matchesSearch = searchQuery === '' ||
-            listing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-            listing.location.toLowerCase().includes(searchQuery.toLowerCase());
 
-        const matchesCategory = activeCategory === 'All' ||
-            listing.category === activeCategory;
-
-        return matchesSearch && matchesCategory;
-    });
 
 
 

@@ -1,8 +1,6 @@
 
-import React, { useState } from 'react'
-import SearchIcon from '@mui/icons-material/Search';
+import  { useState } from 'react'
 import { MapPin, Home, Calendar, ArrowRight } from 'lucide-react';
-import { useNavigate, NavLink } from 'react-router-dom';
 import { useContext } from 'react';
 import AppContext from './../context/AppContext';
 

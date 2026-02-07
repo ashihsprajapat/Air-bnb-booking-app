@@ -12,7 +12,7 @@ function Footer() {
                     <div className='max-w-80'>
                         <img src={assets.logo_2} alt="logo" className='mb-4 h-8 md:h-9' />
                         <p className='text-sm'>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text
                         </p>
                         <div className='flex items-center gap-3 mt-4'>
                             {/* Instagram */}

@@ -1,5 +1,5 @@
 
-import React, { useContext, useEffect, useState } from 'react'
+import   { useContext, useEffect, useState } from 'react'
 import AppContext from '../context/AppContext'
 import axios from 'axios';
 import { toast } from 'react-toastify';
@@ -12,7 +12,7 @@ import { Home, Plus, RefreshCw } from 'lucide-react';
 function AllListingProfile() {
     const { userData, navigate, backendUrl, userToken } = useContext(AppContext);
     const [allListing, setAllListing]= useState([])
-    const {listings, setListings} = useContext(AppContext)
+    const { setListings} = useContext(AppContext)
     const [isLoading, setIsLoading] = useState(true);
 
     const getAllListings = async () => {
@@ -87,7 +87,7 @@ function AllListingProfile() {
                         <Home className="w-8 h-8 text-gray-400" />
                     </div>
                     <h3 className="text-lg font-medium text-gray-800 mb-2">No listings yet</h3>
-                    <p className="text-gray-600 mb-6">You haven't created any listings yet. Start hosting by adding your first property.</p>
+                    <p className="text-gray-600 mb-6">You haven&apos;t created any listings yet. Start hosting by adding your first property.</p>
                 </div>
             )}
             
