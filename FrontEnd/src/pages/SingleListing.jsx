@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import  { useContext, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import AppContext from '../context/AppContext';
 import axios from 'axios';
-import { MapPin, IndianRupee, Calendar, User, Home, Star, ArrowLeft, ArrowRight, Share2, Heart, Bookmark } from 'lucide-react';
+import { MapPin, Calendar, Home, Star, ArrowLeft, ArrowRight, Share2, Heart, Bookmark } from 'lucide-react';
 
 
-import { loadStripe } from '@stripe/stripe-js';
 
 function SingleListing() {
 

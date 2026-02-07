@@ -19,7 +19,6 @@ function AllListingProfile() {
         try {
             setIsLoading(true);
             const { data } = await axios.get(`${backendUrl}/listing/profile/all-listing`, { headers: { token: userToken } });
-            //console.log(" host by user all listing ", data)
             if (data.success) {
                 setAllListing(data.Listings.reverse() || []);
             } else {

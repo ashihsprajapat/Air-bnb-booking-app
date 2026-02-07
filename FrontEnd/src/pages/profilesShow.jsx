@@ -4,7 +4,6 @@ import { Outlet, useLocation, useParams, NavLink, useNavigate } from 'react-rout
 import { assets } from './../assets/assets';
 import AppContext from './../context/AppContext';
 import { Home, List, Calendar, LogOut, User } from 'lucide-react';
-import { toast } from 'react-toastify';
 
 function ProfileShow() {
     const navigate = useNavigate();

@@ -1,10 +1,15 @@
 
 import { IndianRupee, MapPin, Calendar } from 'lucide-react';
+import { Listing } from './ListingCardProfile';
+
+interface listingProp{
+    listing : Listing
+}
 
 
-function LisitngCard({ listing  }) {
+function LisitngCard({ listing  } : listingProp) {
     // Function to truncate description to a specific length
-    const truncateText = (text, maxLength) => {
+    const truncateText = (text : string , maxLength:number ) => {
         if (!text) return "";
         return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
     };
