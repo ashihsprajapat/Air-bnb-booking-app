@@ -2,8 +2,8 @@
 
 import express from 'express'
 import { protectListing } from '../middleware/protectListing.js';
-import { paymnetRazorPay, verifyRazorpay } from '../controller/transaction.controller.js';
-import { createBooking } from '../controller/booking.controller.js';
+import { paymnetRazorPay, verifyRazorpay } from './transaction.controller.js';
+import { createBooking } from '../Booking/booking.controller.js';
 
 const transactionRoute= express.Router();
 

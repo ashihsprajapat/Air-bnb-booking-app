@@ -1,7 +1,7 @@
 
 import bcrypt from 'bcrypt'
 
-import User from './../models/userModel.js';
+import User from './userModel.js';
 import { generateToekn } from './../utils/tokenGenret.js';
 import nodemailer from 'nodemailer'
 

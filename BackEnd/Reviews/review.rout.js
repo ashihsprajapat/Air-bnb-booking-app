@@ -1,7 +1,7 @@
 
 import express from 'express';
-import { createReview, deleteRevie } from '../controller/Review.controller.js';
-import { protectListing } from './../middleware/protectListing.js';
+import { createReview, deleteRevie } from './Review.controller.js';
+import { protectListing } from '../middleware/protectListing.js';
 const Router = express.Router();
 
 

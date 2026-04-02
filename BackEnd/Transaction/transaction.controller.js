@@ -1,6 +1,6 @@
-import Transaction from "../models/transaction.model.js";
+import Transaction from "./transaction.model.js";
 import Razorpay from "razorpay";
-import User from './../models/userModel.js';
+import User from '../User/userSchema.js';
 
 //getway initailize
 const razorpayInstance = new Razorpay({

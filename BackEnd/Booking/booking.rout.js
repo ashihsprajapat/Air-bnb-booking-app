@@ -1,7 +1,7 @@
 
 import express from "express";
-import { protectListing } from './../middleware/protectListing.js';
-import { createBooking, cancelBooking, getAllBookingByUser } from "../controller/booking.controller.js";
+import { protectListing } from '../middleware/protectListing.js';
+import {  cancelBooking, getAllBookingByUser } from "./booking.controller.js";
 const bookingRout= express.Router()
 
 

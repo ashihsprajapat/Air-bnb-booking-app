@@ -2,9 +2,8 @@
 
 import express from 'express';
 const Router = express.Router();
-import multer from 'multer';
-import upload from './../config/multer.js';
-import { createListing, deleteListing, getAllListingHostByUser, getAllListings, getListingById, getUpdateListingDetails, updateListing } from './../controller/listing.controller.js';
+import upload from '../config/multer.js';
+import { createListing, deleteListing, getAllListingHostByUser, getAllListings, getListingById, getUpdateListingDetails, updateListing } from './listing.controller.js';
 import { protectListing } from '../middleware/protectListing.js';
 
 

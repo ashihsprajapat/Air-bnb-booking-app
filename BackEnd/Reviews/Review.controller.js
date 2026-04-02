@@ -1,6 +1,6 @@
 
-import Review from '../models/reviewModel.js';
-import Listing from './../models/listingModel.js';
+import Review from './reviewModel.js';
+import Listing from '../Listings/listingModel.js';
 
 //create a review for a listing
 export const createReview = async (req, res) => {

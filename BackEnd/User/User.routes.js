@@ -1,7 +1,7 @@
 
 
 import express from 'express';
-import { getUserData, saveOTP, userLogin, userRegister, verifyEmail } from '../controller/user.controll.js';
+import { getUserData, saveOTP, userLogin, userRegister, verifyEmail } from './user.controll.js';
 import { protectListing } from '../middleware/protectListing.js';
 const Router = express.Router()
 

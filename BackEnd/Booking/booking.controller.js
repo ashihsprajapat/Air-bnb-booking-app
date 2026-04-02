@@ -1,7 +1,7 @@
 
 
-import { Booking } from "../models/bookingModel.js";
-import Listing from "../models/listingModel.js";
+import { Booking } from "./bookingModel.js";
+import Listing from "../Listings/listingModel.js";
 import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_KEY);
 

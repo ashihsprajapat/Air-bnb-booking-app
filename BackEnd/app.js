@@ -7,18 +7,17 @@ dotenv.config();
 
 
 import express from "express";
-import mongoose from "mongoose";
 import connectToCloudinary from "./config/cloundinary.js";
 import cors from 'cors'
 
 //route for review
-import revieRoute from './routes/review.rout.js'
+import revieRoute from './Reviews/review.rout.js'
 
 //route for user authentication
-import userRoute from './routes/User.routes.js'
+import userRoute from './User/User.routes.js'
 
 //routes for listing
-import ListingRoute from "./routes/listing.route.js";
+import ListingRoute from "./Listings/listing.route.js";
 
 const app = express();
 
@@ -45,8 +44,8 @@ app.listen(port, () => {
 })
 
 import connectToDataBase from "./config/mongooseDB.js";
-import bookingRout from "./routes/booking.rout.js";
-import transactionRoute from "./routes/transacation.rout.js";
+import bookingRout from "./Booking/booking.rout.js";
+import transactionRoute from "./Transaction/transacation.rout.js";
 
 //connect to database 
 await connectToDataBase()

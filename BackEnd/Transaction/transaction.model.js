@@ -1,5 +1,5 @@
 import { model } from 'mongoose'
-import { transactionSchema } from "../Schemas/transaction.schema.js";
+import { transactionSchema } from "./transaction.schema.js";
 
 const Transaction = model("Transaction", transactionSchema);
 

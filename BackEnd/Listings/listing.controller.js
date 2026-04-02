@@ -1,5 +1,5 @@
 import cloudinary from 'cloudinary';
-import Listing from './../models/listingModel.js';
+import Listing from './listingModel.js';
 //get all listings
 export const getAllListings = async (req, res) => {
     try {

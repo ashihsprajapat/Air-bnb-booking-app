@@ -1,5 +1,5 @@
-import Listing from "../models/listingModel.js";
-import User from "../models/userModel.js";
+import Listing from "../Listings/listingModel.js";
+import User from "../User/userModel.js";
 
 import { Schema } from "mongoose";
 

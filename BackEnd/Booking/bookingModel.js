@@ -1,6 +1,6 @@
 
 import { model } from "mongoose";
-import bookingSchema from "../Schemas/bookingSchema.js";
+import bookingSchema from "./bookingSchema.js";
 
 export const Booking = model("Booking", bookingSchema);
 

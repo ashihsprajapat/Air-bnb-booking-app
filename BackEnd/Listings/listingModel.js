@@ -1,6 +1,6 @@
 import {model} from "mongoose";
 
-import listingSchema from "../Schemas/listingSchema.js";
+import listingSchema from "./listingSchema.js";
 
 const Listing=model("Listing",listingSchema);
 

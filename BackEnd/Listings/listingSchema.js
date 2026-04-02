@@ -1,7 +1,6 @@
 import { Schema } from "mongoose";
 //const Review
-import Review from "../models/reviewModel.js";
-import User from "../models/userModel.js";
+import User from "../User/userModel.js";
 
 const listingSchema = new Schema({
     onwer: {
