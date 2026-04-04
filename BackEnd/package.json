@@ -30,6 +30,7 @@
     "passport-local-mongoose": "^8.0.0",
     "path": "^0.12.7",
     "razorpay": "^2.9.6",
+    "redis": "^5.11.0",
     "stripe": "^18.4.0"
   }
 }

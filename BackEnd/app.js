@@ -56,6 +56,7 @@ await connectToDataBase()
 
 app.get("/", (req, res) => { res.send( "Api is working fine" ) })
 
+import  client from './config/Redis.js'
 
 //connect to cloudinary
 await connectToCloudinary();

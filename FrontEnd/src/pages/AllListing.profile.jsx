@@ -17,8 +17,10 @@ function AllListingProfile() {
 
     const getAllListings = async () => {
         try {
+            console.log("trigger for new all  Listing")
             setIsLoading(true);
             const { data } = await axios.get(`${backendUrl}/listing/profile/all-listing`, { headers: { token: userToken } });
+            console.log("All listing created by user ",data.Listings)
             if (data.success) {
                 setAllListing(data.Listings.reverse() || []);
             } else {

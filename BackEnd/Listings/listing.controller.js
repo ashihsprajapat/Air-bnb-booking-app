@@ -1,13 +1,31 @@
 import cloudinary from 'cloudinary';
 import Listing from './listingModel.js';
+import client from '../config/Redis.js';
 //get all listings
 export const getAllListings = async (req, res) => {
     try {
+        console.log("request come here")
+        let listingInRedis= await client.lRange("Listing",0, 13)
+        
+        if(listingInRedis.length >1){
+            const data= listingInRedis.map((listing)=> JSON.parse(listing))
+           // console.log("after parsing of redis ", data)
+            console.log("its returns from  redis")
+            return  res.json(  data)
+        }
         const Listings = await Listing.find({}).populate('_id').select('-password')
+        
+        for(let l  of  Listings){
+             console.log("add success fully")
+            await  client.lPush('Listing', JSON.stringify( l));
+           
+        }
+        await client.expire("Lisiting", 20 );
 
         res.json({ success: true, Listings });
 
     } catch (err) {
+        console.log(err.message)
         res.json({ success: false, message: err.message })
     }
 }
@@ -17,6 +35,12 @@ export const getListingById = async (req, res) => {
     const { id } = req.params;
     try {
 
+        const Redlisting= await client.get(`Listing:${id}`);
+        if(Redlisting){
+            let listing= JSON.parse( Redlisting);
+            return res.json({success:true,  listing})
+        }
+
         const listing = await Listing.findById(id).populate([{
             path: "reviews",
             select: "ownerName comment rating createdAt onwer"
@@ -24,6 +48,8 @@ export const getListingById = async (req, res) => {
         if (!listing) {
             return res.json({ success: false, message: "Invalid " })
         }
+        await client.set(`Listing:${id}`, JSON.stringify(listing))
+        await client.expire(`Listing:${id}`, 30);
         res.json({ success: true, listing })
     } catch (err) {
         console.log(err)
@@ -172,7 +198,19 @@ export const getAllListingHostByUser = async (req, res) => {
     try {
         const user = req.user;
         const _id = user._id;
+        const listing= await client.lRange(`userListing:${_id}`, 0 , -1);
+       
+        if(listing.length > 1){
+            console.log("return from redis")
+            const Listings= listing.map((list)=> JSON.parse(list))
+            return res.json({ success:true, Listings})
+        }
         const Listings = await Listing.find({ onwer: _id });
+        for(let l of Listings){
+            
+        await client.lPush(`userListing:${_id}`, JSON.stringify(l));
+        }
+        await client.expire(`userListing:${_id}`, 300)
 
         res.json({ success: true, Listings });
     } catch (err) {

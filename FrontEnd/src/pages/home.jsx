@@ -39,12 +39,9 @@ function Home() {
         if (listings.length == 0)
             allData()
 
-    }, [])
+    }, )
 
-    // Filter listings based on search query and category
-
-
-
+   console.log("Listing for home page", listings)
 
     return (
         <div className="min-h-screen bg-gray-50">

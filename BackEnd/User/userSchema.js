@@ -9,5 +9,6 @@ const userSchema = new Schema({
     validTime:{type:Date},
     totalPublicListings:[ { type: Schema.Types.ObjectId, ref: 'Listing' }],
     totalBookings:[ { type: Schema.Types.ObjectId, ref: 'Booking' }],
+    lastLogin: {type: Date, default : null}
 });
 export default userSchema;

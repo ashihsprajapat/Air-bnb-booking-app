@@ -10,14 +10,13 @@ function AllListing() {
     const { backendUrl, isHomePageLoading, setHomePageLoading } = useContext(AppContext);
 
     const [listings, setListings] = useState([]);
-    // console.log(listings)
 
     const allData = async () => {
 
         setHomePageLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/`)
-          //  console.log("loading all listing host by user ",data)
+            console.log("loading all listing host by user ",data)
             setListings(data.Listings)
         } catch (err) {
             console.log(err)
@@ -27,6 +26,7 @@ function AllListing() {
 
     }
     useEffect(() => {
+        console.log("Calling to fetch all datas ")
         allData()
     }, [])
 

@@ -26,7 +26,6 @@ function SingleListing() {
 
     } = useContext(AppContext);
 
-console.log("one listing ",Onelisting)
     useEffect(() => {
         if (Onelisting)
             return

@@ -45,14 +45,13 @@ export const AppContextProvider = (props) => {
 
     const [allReview, setAllReviews] = useState([])
 
-
     //fetching all listing 
     const allData = async () => {
         setHomePageLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/`)
-            console.log(data.Listings)
-            setListings(data.Listings.reverse())
+            console.log( "All Data in context api ",data)
+            setListings(data.reverse())
         } catch (err) {
             console.log(err)
         } finally {
@@ -76,10 +75,11 @@ export const AppContextProvider = (props) => {
     const [state, setState] = useState('Login');
 
     useEffect(() => {
-
+        if(userData)
+            return 
         const getToken = localStorage.getItem('air_bnb_token')
 
-        if (getToken) {
+        if ( !userData &&  getToken) {
             setUserToken(getToken);
         }
 
@@ -89,6 +89,8 @@ export const AppContextProvider = (props) => {
     const getUserdata = async () => {
 
         try {
+            if(userData || !userToken)
+                return 
 
             const { data } = await axios.get(`${backendUrl}/auth/getData`, { headers: { token: userToken } })
 
@@ -110,8 +112,8 @@ export const AppContextProvider = (props) => {
         setIsLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/${id}`)
-            // console.log("single listing data is ", data)
             if (data.success) {
+                console.log(data.listing)
                 setOneListing(data.listing);
                 if (data.listing && data.listing.image && data.listing.image.length > 0) {
                     setCurrentImage(data.listing.image[0].url);
@@ -121,13 +123,14 @@ export const AppContextProvider = (props) => {
                 setTotal(data.listing.price * 2);
             } else {
                 toast.error(data.message);
-            }
+            }   
         } catch (err) {
             toast.error(err.message);
         } finally {
             setIsLoading(false);
         }
     }
+    console.log("listing in context api for home page ", listing)
 
     useEffect(() => {
         if (userToken) {

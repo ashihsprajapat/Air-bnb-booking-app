@@ -20,19 +20,17 @@ function OneListingProfile() {
     useEffect(() => {
         if (list_id && userToken) {
             fetchListingDetails();
-            //fetchListingBookings();
         }
     }, [list_id, userToken]);
 
     const fetchListingDetails = async () => {
         try {
             setIsLoading(true);
-            // This is a placeholder API call - update with your actual endpoint
             const { data } = await axios.get(`${backendUrl}/listing/${list_id}`, {
                 headers: { token: userToken }
             });
 
-           // console.log("Fetch listing detilas", data)
+           console.log("Fetch listing detilas from redis", data)
 
             if (data.success) {
                 setListing(data.listing);

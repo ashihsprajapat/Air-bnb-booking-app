@@ -16,17 +16,14 @@ export const userRegister = async (req, res) => {
         const user = await User.findOne({ email })
         if (user)
             return res.json({ success: false, message: "email is already exist" })
-
-
-
         const hashpassword = await bcrypt.hash(password, 10);
 
         const newUser = new User({
-            name, email, password: hashpassword
+            name, email, password: hashpassword, lastLogin: Date.now()
         })
 
         await newUser.save();
-       // console.log( 'new user details',newUser)
+        
         res.json({ success: true, message: "user register successfull", token: generateToekn(newUser._id) })
 
     } catch (err) {
@@ -54,7 +51,8 @@ export const userLogin = async (req, res) => {
         const match = await bcrypt.compare(password, user.password);
         if (!match)
             return res.json({ success: false, message: "wrong password" })
-
+        user.lastLogin= Date.now()
+        await user.save();
         res.json({
             success: true,
             message: "Login success full",
