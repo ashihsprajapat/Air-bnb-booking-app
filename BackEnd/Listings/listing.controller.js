@@ -16,11 +16,10 @@ export const getAllListings = async (req, res) => {
         const Listings = await Listing.find({}).populate('_id').select('-password')
         
         for(let l  of  Listings){
-             console.log("add success fully")
             await  client.lPush('Listing', JSON.stringify( l));
            
         }
-        await client.expire("Lisiting", 20 );
+        await client.expire("Lisiting", 3600 );
 
         res.json({ success: true, Listings });
 
@@ -49,7 +48,7 @@ export const getListingById = async (req, res) => {
             return res.json({ success: false, message: "Invalid " })
         }
         await client.set(`Listing:${id}`, JSON.stringify(listing))
-        await client.expire(`Listing:${id}`, 30);
+        await client.expire(`Listing:${id}`, 300);
         res.json({ success: true, listing })
     } catch (err) {
         console.log(err)
