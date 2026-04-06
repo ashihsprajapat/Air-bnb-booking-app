@@ -14,8 +14,8 @@ import AirportShuttleIcon from '@mui/icons-material/AirportShuttle';
 import BalconyIcon from '@mui/icons-material/Balcony';
 
 function Home() {
-    const {  isHomePageLoading,  allData, filteredListings,
-        listings, 
+    const { isHomePageLoading, allData, filteredListings,
+        listings,
         searchQuery, setSearchQuery,
         activeCategory, setActiveCategory } = useContext(AppContext);
 
@@ -36,12 +36,14 @@ function Home() {
 
 
     useEffect(() => {
-        if (listings.length == 0)
+
+        if (listings.length == 0) {
+            
             allData()
-
+            console.log("Calling to ApiContext for  listings")
+        }
     }, )
-
-   console.log("Listing for home page", listings)
+ console.log("All Listing in home page ",listings)
 
     return (
         <div className="min-h-screen bg-gray-50">

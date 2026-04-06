@@ -4,24 +4,20 @@ import client from '../config/Redis.js';
 //get all listings
 export const getAllListings = async (req, res) => {
     try {
-        console.log("request come here")
         let listingInRedis= await client.lRange("Listing",0, 13)
         
         if(listingInRedis.length >1){
             const data= listingInRedis.map((listing)=> JSON.parse(listing))
-           // console.log("after parsing of redis ", data)
-            console.log("its returns from  redis")
             return  res.json(  data)
         }
         const Listings = await Listing.find({}).populate('_id').select('-password')
-        
+         res.json({ success: true, Listings });
         for(let l  of  Listings){
             await  client.lPush('Listing', JSON.stringify( l));
-           
         }
         await client.expire("Lisiting", 3600 );
 
-        res.json({ success: true, Listings });
+       
 
     } catch (err) {
         console.log(err.message)
@@ -47,9 +43,10 @@ export const getListingById = async (req, res) => {
         if (!listing) {
             return res.json({ success: false, message: "Invalid " })
         }
-        await client.set(`Listing:${id}`, JSON.stringify(listing))
-        await client.expire(`Listing:${id}`, 300);
         res.json({ success: true, listing })
+        await client.set(`Listing:${id}`, JSON.stringify(listing), {EX:300})
+       // await client.expire(`Listing:${id}`, );
+       
     } catch (err) {
         console.log(err)
         res.json({ success: false, message: err.message })
@@ -200,18 +197,18 @@ export const getAllListingHostByUser = async (req, res) => {
         const listing= await client.lRange(`userListing:${_id}`, 0 , -1);
        
         if(listing.length > 1){
-            console.log("return from redis")
             const Listings= listing.map((list)=> JSON.parse(list))
             return res.json({ success:true, Listings})
         }
         const Listings = await Listing.find({ onwer: _id });
+        res.json({ success: true, Listings });
         for(let l of Listings){
             
         await client.lPush(`userListing:${_id}`, JSON.stringify(l));
         }
         await client.expire(`userListing:${_id}`, 300)
 
-        res.json({ success: true, Listings });
+        
     } catch (err) {
         console.log(err)
     }

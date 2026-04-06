@@ -17,7 +17,6 @@ export const protectListing = async (req, res, next) => {
         
         if(cachedUser ){
             req.user= JSON.parse(cachedUser)
-            console.log(req.user)
             return next();
         }
         const decode = jwt.verify(token, process.env.JwT_SECRET)

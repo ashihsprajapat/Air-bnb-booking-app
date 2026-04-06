@@ -47,10 +47,13 @@ export const AppContextProvider = (props) => {
 
     //fetching all listing 
     const allData = async () => {
+        if(listings.length >0){
+            console.log("already this have data for home page")
+            return ;
+        }
         setHomePageLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/`)
-            console.log( "All Data in context api ",data)
             setListings(data.reverse())
         } catch (err) {
             console.log(err)
@@ -75,26 +78,28 @@ export const AppContextProvider = (props) => {
     const [state, setState] = useState('Login');
 
     useEffect(() => {
-        if(userData)
+        if(  userToken ||userData ){
+            console.log("Already user data have in that")
             return 
+        }
         const getToken = localStorage.getItem('air_bnb_token')
 
         if ( !userData &&  getToken) {
             setUserToken(getToken);
         }
 
-    }, [userToken, setUserToken])
+    }, [ ])
 
     // get user data 
     const getUserdata = async () => {
 
         try {
-            if(userData || !userToken)
+            if(userData )
                 return 
 
             const { data } = await axios.get(`${backendUrl}/auth/getData`, { headers: { token: userToken } })
 
-            console.log("user data is", data);
+            
             if (data.success) {
                 setUserData(data.user);
             } else {
@@ -113,14 +118,12 @@ export const AppContextProvider = (props) => {
         try {
             const { data } = await axios.get(`${backendUrl}/listing/${id}`)
             if (data.success) {
-                console.log(data.listing)
                 setOneListing(data.listing);
                 if (data.listing && data.listing.image && data.listing.image.length > 0) {
                     setCurrentImage(data.listing.image[0].url);
                 }
                 setAllReviews(data.listing.reviews.reverse())
                 setPrice(data.listing.price)
-                setTotal(data.listing.price * 2);
             } else {
                 toast.error(data.message);
             }   
@@ -130,15 +133,17 @@ export const AppContextProvider = (props) => {
             setIsLoading(false);
         }
     }
-    console.log("listing in context api for home page ", listing)
 
     useEffect(() => {
+        console.log(" Calling to user Data ....");
         if (userToken) {
             getUserdata()
         } else {
             setUserData(null);
         }
     }, [userToken, setUserToken])
+
+    console.log("User data in context Api   ", userData)
 
     useEffect(() => {
         setMenuBarShow(false)

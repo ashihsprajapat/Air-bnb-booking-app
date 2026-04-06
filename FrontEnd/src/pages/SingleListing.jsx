@@ -57,7 +57,6 @@ function SingleListing() {
 
     // for creat reviews 
     const createReview = async (e) => {
-        // Prevent default form submission behavior that causes page reload
         e.preventDefault();
         if (!rating || !comment) {
             toast.error("Please provide both rating and comment");
@@ -78,7 +77,6 @@ function SingleListing() {
             }, {
                 headers: {
                     token: userToken
-                    //  Authorization: `Bearer ${userToken}` 
                 }
             });
 
@@ -102,21 +100,16 @@ function SingleListing() {
 
     // reviwe is delete
     const deleteReview = async (Rid) => {
-
         if (!userToken) {
             return
         }
-
         try {
             if (!id || !Rid) {
                 toast.error("something went wrong")
             }
-
-
             const { data } = await axios.post(`${backendUrl}/revies/${id}/${Rid}/delete`,
                 {},
                 { headers: { token: userToken } })
-
             if (data.success) {
                 toast.success("Review deleted successfully")
                 setAllReviews(allReview => (
@@ -125,7 +118,6 @@ function SingleListing() {
             } else {
                 toast.error(data.message)
             }
-
         } catch (err) {
             toast.error(err.message)
         }
@@ -191,7 +183,6 @@ function SingleListing() {
                 }
             }
         }
-
         const rzp = new window.Razorpay(options);
         rzp.open()
     }
@@ -207,19 +198,13 @@ function SingleListing() {
                     to
                 },
                 pricePerNight: Onelisting.price
-
             }
-
-
             const { data } = await axios.post(`${backendUrl}/transaction/payment/${id}`, bookingData, { headers: { token: userToken } })
-
             if (data.success) {
                 initPay(data.order);
-
             } else {
                 console.log(data.message)
             }
-
         } catch (error) {
             console.log(error)
             toast.error(error.message)
@@ -262,7 +247,6 @@ function SingleListing() {
                     <ArrowLeft className="w-4 h-4 mr-1" />
                     Back to listings
                 </a>
-
                 {/* Listing Header */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
                     <div>
@@ -304,7 +288,6 @@ function SingleListing() {
                     </div>
                 </div>
             </div>
-
             {/* Image Gallery */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div className="md:col-span-2 relative rounded-xl overflow-hidden">
@@ -313,7 +296,6 @@ function SingleListing() {
                         className="w-full h-[400px] md:h-[500px] object-cover"
                         alt={Onelisting.title}
                     />
-
                     {/* Navigation arrows */}
                     <div className="absolute inset-0 flex items-center justify-between px-4">
                         <button
@@ -331,13 +313,11 @@ function SingleListing() {
                             <ArrowRight className="w-5 h-5 text-gray-800" />
                         </button>
                     </div>
-
                     {/* Image counter */}
                     <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
                         {currentImageIndex + 1} / {Onelisting.image ? Onelisting.image.length : 0}
                     </div>
                 </div>
-
                 <div className="hidden md:grid grid-cols-2 gap-4 h-[500px] overflow-y-auto">
                     {Onelisting.image && Onelisting.image.map((img, i) => (
                         <div
@@ -354,7 +334,6 @@ function SingleListing() {
                     ))}
                 </div>
             </div>
-
             {/* Mobile Thumbnails */}
             <div className="flex md:hidden overflow-x-auto space-x-2 pb-4 mb-6">
                 {Onelisting.image && Onelisting.image.map((img, i) => (
