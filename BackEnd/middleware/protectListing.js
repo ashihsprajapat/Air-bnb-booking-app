@@ -6,6 +6,8 @@ dotenv.config();
 import client from './../config/Redis.js';
 
 export const protectListing = async (req, res, next) => {
+
+
     
     const token = req.headers.token;
     
@@ -25,8 +27,9 @@ export const protectListing = async (req, res, next) => {
         if (!user) {
             return res.json({ success: false, message: "User not found" });
         }
+        
         req.user= user;
-        await client.set(token, JSON.stringify(user),{EX: 3600})
+        await client.set(token, JSON.stringify(user),{EX: 20*60})
 
         next();
     } catch (err) {
@@ -37,4 +40,16 @@ export const protectListing = async (req, res, next) => {
 
 }
 
+export const verifyEmail=async(req,res,next)=>{
+    try {
+        const user= req.user;
+        if(!user.verify){
+            return res.json({message:"Please verify Email", success:false})
+        }
+        console.log("return befor here")
+        next();
+    } catch (error) {   
+        
+    }
+}
 

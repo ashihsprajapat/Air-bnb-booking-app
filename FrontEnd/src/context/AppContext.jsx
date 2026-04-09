@@ -47,20 +47,22 @@ export const AppContextProvider = (props) => {
 
     //fetching all listing 
     const allData = async () => {
-        if(listings.length >0){
-            console.log("already this have data for home page")
-            return ;
-        }
         setHomePageLoading(true);
         try {
             const { data } = await axios.get(`${backendUrl}/listing/`)
-            setListings(data.reverse())
+            if(data?.tip){
+                setListings(data.Listings.reverse())
+            }else
+                setListings(data.Listings)
         } catch (err) {
             console.log(err)
         } finally {
             setHomePageLoading(false);
         }
     }
+    useEffect(() => {
+            allData()
+    }, [])
 
     //filtering listing 
     const filteredListings = listings.filter(listing => {
@@ -78,28 +80,27 @@ export const AppContextProvider = (props) => {
     const [state, setState] = useState('Login');
 
     useEffect(() => {
-        if(  userToken ||userData ){
-            console.log("Already user data have in that")
-            return 
+        if (userToken || userData) {
+            return
         }
         const getToken = localStorage.getItem('air_bnb_token')
 
-        if ( !userData &&  getToken) {
+        if (!userData && getToken) {
             setUserToken(getToken);
         }
 
-    }, [ ])
+    }, [])
 
     // get user data 
     const getUserdata = async () => {
 
         try {
-            if(userData )
-                return 
+            if (userData)
+                return
 
             const { data } = await axios.get(`${backendUrl}/auth/getData`, { headers: { token: userToken } })
 
-            
+
             if (data.success) {
                 setUserData(data.user);
             } else {
@@ -126,7 +127,7 @@ export const AppContextProvider = (props) => {
                 setPrice(data.listing.price)
             } else {
                 toast.error(data.message);
-            }   
+            }
         } catch (err) {
             toast.error(err.message);
         } finally {
@@ -135,7 +136,6 @@ export const AppContextProvider = (props) => {
     }
 
     useEffect(() => {
-        console.log(" Calling to user Data ....");
         if (userToken) {
             getUserdata()
         } else {
@@ -143,12 +143,12 @@ export const AppContextProvider = (props) => {
         }
     }, [userToken, setUserToken])
 
-    console.log("User data in context Api   ", userData)
 
     useEffect(() => {
         setMenuBarShow(false)
     }, [setState, navigate, setUserToken, setUserData, userToken])
 
+    console.log("user Data ", userData)
     const value = {
         navigate, backendUrl, userData, setUserData,
         menuBarShow, setMenuBarShow,

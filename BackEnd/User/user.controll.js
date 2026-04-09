@@ -3,7 +3,11 @@ import bcrypt from 'bcrypt'
 
 import User from './userModel.js';
 import { generateToekn } from './../utils/tokenGenret.js';
-import nodemailer from 'nodemailer'
+
+import { optGernate } from './../utils/optGererate.js';
+import { transport , templetOTPMail } from '../config/NodeMailer.js';
+import client from '../config/Redis.js';
+
 
 //user register
 export const userRegister = async (req, res) => {
@@ -74,34 +78,21 @@ export const getUserData= async(req,res, next)=>{
 }
 
 //sending email 
-export const saveOTP= async(req, res)=>{
+export const otpsend= async(req, res)=>{
     try {
-        const {user}= req.user;
-          const transport = nodemailer.createTransport({
-            host: "AshishPrajpat",
-            port: 1029,
-            secure: true,
-            auth: {
-                user: "ashishprajapat507@gmail.com",
-                pass: "Ashish@123"
-            }
-        })
+        const user= req.user;
+        const otp = optGernate()
 
-        const otpGen = Math.floor(Math.random() * 1000000)
-        const info = await transport.sendMail({
-            from: "ashishprajapat507@gmail.com",
-            to: userData.email,
-            subject: "Verify Email ",
-            html: `<b>Hello world ${otpGen}</b>`,
-        })
-        console.log(info)
-        console.log("sending email successfull")
-    
-       
-        user.otp= otpGen;
-        user.validTime= Date.now + 10 * 60 * 1000;
-        await user.save()
-        return res.json({success:true, message:"opt save"})
+        const content= templetOTPMail(user.email, otp)
+        
+        const info = await transport.sendMail(content)
+        if(info.rejected.length  > 0)
+            return res.json({message:"Something went wrong", success:false})
+        
+        res.json({success:true, message:"opt save Success full "})
+        
+        let val= await  client.set(`otp:${user._id}`, otp, {EX : 1*60} )
+        
     } catch (error) {
         res.json({message:error.message, success:false})
     }
@@ -110,20 +101,22 @@ export const saveOTP= async(req, res)=>{
 //verify user email
 export const verifyEmail= async(req,res)=>{
     try{
-        const {otp, validTime}= req.body;
-        const {user} =req
-        if(!user.otp  || !user.validTime)
-            return res.json({success:false, message:"Please send otp"})
-        if(!otp.equlas(user.otp) )
-            return res.json({success:false, message:"wrong otp "})
-        if( user.validTime < Date.now())
-            return res.json({success:false, message:"Not valid OTP please try Again"})
-        user.verifyEmail=true;
-        user.otp=null;
-        user.validTime=null;
-        await user.save()
-        return res.json({message:"Verify successfull", success:true})
-
+        const {otp}= req.body;
+        const user =await User.findById(req.user)
+        if(!otp  )
+            return res.json({success:false, message:"Please give me otp"})
+        let val= await client.get(`otp:${user._id}`)
+        if(!val)
+            return res.json({message:"Otp is expire", success: false})
+        
+        if(JSON.parse(val) != otp)
+            return res.json({message:"Wrong Otp", success:false})
+        
+        user.verify = true;
+        res.json({success:true, message:"Email verify success", user})
+        await user.save();
+        const token = req.headers.token;
+        await client.set(token, JSON.stringify(user),{EX:20*60}) // 20 minit
     }catch(err){
         console.log(err)
         res.json({message:err.message, success:false})

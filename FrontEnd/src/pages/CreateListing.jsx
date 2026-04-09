@@ -13,13 +13,18 @@ import FortIcon from '@mui/icons-material/Fort';
 import BalconyIcon from '@mui/icons-material/Balcony';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import NearMeOutlinedIcon from '@mui/icons-material/NearMeOutlined';
-import { toast } from 'react-toastify';
+
 import AppContext from '../context/AppContext';
 import axios from 'axios';
 import { ArrowLeft, ArrowRight, Check, Home, MapPin, Upload, Image, PenSquare, IndianRupee } from 'lucide-react';
+import toast from 'react-hot-toast';
 
 function CreateListing() {
-    const { backendUrl, userToken, navigate, setListings, setUserData } = useContext(AppContext);
+    const { backendUrl, userToken, navigate, setListings, userData, setUserData } = useContext(AppContext);
+    if (!userData?.verify) {
+        toast.success("Please verify email")
+        navigate("/verify-email")
+    }
 
     const [currentState, setCurrentState] = useState(1);
     const [guestType, setGuestType] = useState(null);
@@ -117,18 +122,12 @@ function CreateListing() {
                         token: userToken
                     }
                 })
-
+                console.log("After creating listing resonse ", data)
                 setIsLoading(false)
 
                 if (data.success) {
                     toast.success(data.message);
-                    setUserData((prev) => ({
-                        ...prev,
-                        totalPublicListings: [
-                            ...prev.totalPublicListings,
-                            String(data.newListing._id)
-                        ],
-                    }));
+                    setUserData(data.user);
                     setListings((pre) => [data.newListing, ...pre])
                     navigate(`/${data.newListing._id}`)
                 } else {

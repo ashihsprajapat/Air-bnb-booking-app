@@ -1,7 +1,7 @@
 
 
 import express from 'express';
-import { getUserData, saveOTP, userLogin, userRegister, verifyEmail } from './user.controll.js';
+import { getUserData, otpsend,  userLogin, userRegister, verifyEmail } from './user.controll.js';
 import { protectListing } from '../middleware/protectListing.js';
 const Router = express.Router()
 
@@ -18,7 +18,7 @@ Router.route("/login")
 Router.route("/getData")
     .get(protectListing, getUserData)
 
-Router.post("/saveOTP", protectListing, saveOTP)
+Router.post("/sendOTP", protectListing, otpsend)
 Router.post("/verifyOtp", protectListing, verifyEmail)
 
 

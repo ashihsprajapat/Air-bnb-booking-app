@@ -4,7 +4,7 @@ import express from 'express';
 const Router = express.Router();
 import upload from '../config/multer.js';
 import { createListing, deleteListing, getAllListingHostByUser, getAllListings, getListingById, getUpdateListingDetails, updateListing } from './listing.controller.js';
-import { protectListing } from '../middleware/protectListing.js';
+import { protectListing ,verifyEmail} from '../middleware/protectListing.js';
 
 
 
@@ -14,14 +14,14 @@ Router.route("/")  // caching
 
 //update listing by id
 Router.route("/:id/update-listing")   // caching 
-    .get(protectListing, getUpdateListingDetails)
-    .post(protectListing, upload.single("image"), updateListing)
+    .get(protectListing, verifyEmail, getUpdateListingDetails)
+    .post(protectListing, verifyEmail, upload.single("image"), updateListing)
 
 
 
 //delete listing
 Router.route("/:id/delete")
-    .delete( protectListing,  deleteListing)
+    .delete( protectListing, verifyEmail,  deleteListing)
 
 
 //get a single listing
@@ -32,6 +32,7 @@ Router.route("/:id")
 Router.route("/create") // caching
     .post(
         protectListing,
+        verifyEmail,
         upload.array("image",8),
         createListing
     );
@@ -40,6 +41,7 @@ Router.route("/create") // caching
 //get all listing host by user
 Router.route("/profile/all-listing")
 .get(protectListing,
+    verifyEmail,
     getAllListingHostByUser   // caching 
 )
 

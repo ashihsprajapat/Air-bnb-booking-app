@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify';
+import { toast } from 'react-hot-toast';
 import AppContext from '../context/AppContext';
 import axios from 'axios';
 import { MapPin, Calendar, Home, Star, ArrowLeft, ArrowRight, Share2, Heart } from 'lucide-react';

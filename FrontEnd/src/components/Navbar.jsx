@@ -34,8 +34,15 @@ function Navbar() {
                         placeholder="Search products"
                     />
                 </div>
+                {
+                    userData?.verify ?
+                        <NavLink to="/host/homes">Air bnb Your Home</NavLink>
+                        :(userData && 
+                        <NavLink className={`text-red-500 border border-gray-600 bg-gray-300 px-7 rounded-3xl font-semibold cursor-pointer hover:bg-gray-200 py-1
+                        `} to="/verify-email">Verify Email</NavLink>)
+                }
 
-                <NavLink to="/host/homes">Air bnb Your Home</NavLink>
+
 
                 {/* Profile / Login */}
                 {userData ? (
@@ -79,9 +86,17 @@ function Navbar() {
                 className={`${open ? 'flex' : 'hidden'
                     } absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col gap-3 px-5 text-sm sm:hidden`}
             >
-                <NavLink to="/host/homes" onClick={() => setOpen(false)}>
-                    Air bnb your home
-                </NavLink>
+                {
+                    userData?.verify ?
+                        <NavLink to="/host/homes" onClick={() => setOpen(false)}>
+                            Air bnb your home
+                        </NavLink>
+                        :
+                        <NavLink className={`text-red-500 border border-gray-600 bg-gray-300 px-7 rounded-3xl font-semibold cursor-pointer hover:bg-gray-200 py-1
+                        `} to="/verify-email">Verify Email</NavLink>
+                }
+
+
 
                 {userData ? (
                     <div

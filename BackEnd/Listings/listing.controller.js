@@ -1,23 +1,30 @@
 import cloudinary from 'cloudinary';
 import Listing from './listingModel.js';
 import client from '../config/Redis.js';
+import {templetListingCreate, transport} from '../config/NodeMailer.js'
+import User from '../User/userModel.js';
 //get all listings
 export const getAllListings = async (req, res) => {
     try {
-        let listingInRedis= await client.lRange("Listing",0, 13)
-        
+      // await client.expire("Listing",1)
+      //return res.json({message:"Something went wrong", success:false})
+       // const allList= await Listing.find({})
+       // console.log(allList.length)
+        let listingInRedis= await client.lRange("Listing",0, -1)
         if(listingInRedis.length >1){
             const data= listingInRedis.map((listing)=> JSON.parse(listing))
-            return  res.json(  data)
+            
+            return  res.json(  { success:true,  Listings : data})
         }
         const Listings = await Listing.find({}).populate('_id').select('-password')
-         res.json({ success: true, Listings });
+        
+
+        res.json({ success: true, Listings, tip:"Data"  });
         for(let l  of  Listings){
             await  client.lPush('Listing', JSON.stringify( l));
         }
         await client.expire("Lisiting", 3600 );
 
-       
 
     } catch (err) {
         console.log(err.message)
@@ -152,7 +159,8 @@ export const deleteListing = async (req, res) => {
 //create listing
 export const createListing = async (req, res) => {
     let  { title, description, price, address, location, country, guestType, category } = req.body;
-    const userId = req.user;
+    
+    const user = await User.findById(req.user._id);
     address= JSON.parse(address);
 
     try {
@@ -174,13 +182,19 @@ export const createListing = async (req, res) => {
 
         const newListing = new Listing({
             title, description, price, location, country, image,
-            onwer: userId._id, address, guestType, category
+            onwer: user._id, address, guestType, category
         })
         await newListing.save();
-        userId.totalPublicListings?.push(newListing._id);
-        await userId.save();
+        user.totalPublicListings?.push(newListing._id);
+        await user.save();
 
-        return res.json({ success: true, newListing })
+        res.json({ success: true, newListing, user, message:"Listing create successfully" })
+        const content= templetListingCreate(newListing._id, user.email,  newListing)
+        const info= await transport.sendMail(content);
+        const Listings = await Listing.find({}).populate('_id').select('-password')
+        
+        await  client.lPush('Listing', JSON.stringify( newListing));
+        
     } catch (err) {
         res.json({ success: false, message: err.message })
     }
@@ -192,11 +206,14 @@ export const createListing = async (req, res) => {
 export const getAllListingHostByUser = async (req, res) => {
 
     try {
+        
         const user = req.user;
         const _id = user._id;
+       // await client.expire(`userListing:${_id}`,1)
+       // return res.json({success:false, message:"Something went wrong"})
         const listing= await client.lRange(`userListing:${_id}`, 0 , -1);
-       
-        if(listing.length > 1){
+        
+        if(listing.length   > 1){
             const Listings= listing.map((list)=> JSON.parse(list))
             return res.json({ success:true, Listings})
         }

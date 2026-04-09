@@ -47,6 +47,7 @@ import connectToDataBase from "./config/mongooseDB.js";
 import bookingRout from "./Booking/booking.rout.js";
 import transactionRoute from "./Transaction/transacation.rout.js";
 
+
 //connect to database 
 await connectToDataBase()
   .then(() => {
@@ -54,9 +55,16 @@ await connectToDataBase()
   })
   .catch(err => console.log(err));
 
+
 app.get("/", (req, res) => { res.send( "Api is working fine" ) })
 
 import  client from './config/Redis.js'
+import {transport} from './config/NodeMailer.js'
+
+
+  await transport.verify()
+  .then(()=> console.log("Verify nodemail tranpost"))
+  .catch(e => console.log("Error occur in nodemail "))
 
 //connect to cloudinary
 await connectToCloudinary();
